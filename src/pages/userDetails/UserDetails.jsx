@@ -4,7 +4,7 @@ import { IoSearch } from "react-icons/io5";
 import { MdArrowOutward } from "react-icons/md";
 
 function UserDetails() {
-  const [toggle, setToggle] = useState(false);
+  // const [toggle, setToggle] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -143,7 +143,7 @@ function UserDetails() {
       key: "action",
       render: () => (
         <button className="" onClick={showModal}>
-          <MdArrowOutward className="text-[#4289FF] w-10 h-10" />
+          <MdArrowOutward className="text-[#FF0000] w-10 h-10" />
         </button>
       ),
     },
@@ -151,49 +151,7 @@ function UserDetails() {
 
   return (
     <div>
-      <div className="my-5 md:my-10 flex flex-col md:flex-row gap-5 justify-between items-center">
-        <div className="flex gap-5">
-          <div className="flex items-center gap-[10px]">
-            <div
-              className={` w-[25px] h-[25px] border border-[#00C0B5]  rounded-full flex items-center justify-center cursor-pointer `}
-              onClick={() => setToggle(!toggle)}
-            >
-              <div
-                className={`${
-                  toggle
-                    ? "bg-[#00C0B5] scale-[1]"
-                    : "bg-transparent scale-[0.7]"
-                } w-[25px] h-[25px] transition-all duration-200 rounded-full `}
-              ></div>
-            </div>
-            <p
-              className="text-[1.2rem] font-bold text-text cursor-pointer"
-              onClick={() => setToggle(!toggle)}
-            >
-              All User
-            </p>
-          </div>
-          <div className="flex items-center gap-[10px]">
-            <div
-              className={` w-[25px] h-[25px] border border-[#00C0B5]  rounded-full flex items-center justify-center cursor-pointer `}
-              onClick={() => setToggle(!toggle)}
-            >
-              <div
-                className={`${
-                  toggle
-                    ? "bg-[#00C0B5] scale-[1]"
-                    : "bg-transparent scale-[0.7]"
-                } w-[25px] h-[25px] transition-all duration-200 rounded-full `}
-              ></div>
-            </div>
-            <p
-              className="text-[1.2rem] font-bold text-text cursor-pointer"
-              onClick={() => setToggle(!toggle)}
-            >
-              Service Provider
-            </p>
-          </div>
-        </div>
+      <div className="my-5 md:my-10 flex justify-end items-end">
         <div className="relative w-full sm:w-[300px] mt-5 md:mt-0 lg:mt-0">
           <input
             type="text"
@@ -212,17 +170,17 @@ function UserDetails() {
               activeBorderColor: "rgb(19,194,194)",
             },
             Pagination: {
-              colorPrimaryBorder: "rgb(19,194,194)",
-              colorBorder: "rgb(19,194,194)",
-              colorPrimaryHover: "rgb(19,194,194)",
+              colorPrimaryBorder: "#FF0000",
+              colorBorder: "#FF0000",
+              colorPrimaryHover: "#FF0000",
               colorBgTextActive: "rgb(19,194,194)",
               colorTextDisabled: "rgb(19,194,194)",
-              colorTextPlaceholder: "rgb(19,194,194)",
-              itemActiveBgDisabled: "rgb(255,255,255)",
-              colorPrimary: "rgb(19,194,194)",
+              colorTextPlaceholder: "#FF0000",
+              itemActiveBgDisabled: "#FF0000",
+              colorPrimary: "#FF0000",
             },
             Table: {
-              headerBg: "rgb(19,194,194)",
+              headerBg: "#FF0000",
               headerColor: "rgb(255,255,255)",
               cellFontSize: 20,
               headerSplitColor: "rgb(19,194,194)",
@@ -242,15 +200,15 @@ function UserDetails() {
           onCancel={handleCancel}
           footer={null}
         >
-          <div className="flex flex-col justify-center items-center p-5">
-            <h1 className="text-xl text-center text-[#00C0B5]">
-              Are you sure !
+          <div className="flex flex-col justify-center items-center py-10">
+            <h1 className="text-3xl text-center text-[#FF0000]">
+              Are you sure!
             </h1>
-            <p>Do you want to Block your Users profile ?</p>
-            <div className="text-center py-5">
+            <p className="text-xl text-center mt-5">Do you want to block this user profile?</p>
+            <div className="text-center py-5 w-full">
               <button
-                onClick={handleOk}
-                className="bg-[#00c0b5] text-white font-semibold w-full py-2 px-5 rounded transition duration-200"
+                onClick={() => setIsModalOpen(false)}
+                className="bg-[#FF0000] text-white font-semibold w-1/3 py-3 px-5 rounded-lg"
               >
                 CONFIRM
               </button>

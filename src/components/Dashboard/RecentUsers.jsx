@@ -112,7 +112,7 @@ const RecentUsers = () => {
             <div className="text-center py-5 w-full">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="bg-[#FF0000] text-white font-semibold w-1/3 py-2 px-5 rounded transition duration-200"
+                className="bg-[#FF0000] text-white font-semibold w-1/3 py-3 px-5 rounded-lg"
               >
                 CONFIRM
               </button>
