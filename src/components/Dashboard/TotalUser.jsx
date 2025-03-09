@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-const TotalEarningGrowth = () => {
+const TotalUser = () => {
   const revenueData = [
     { month: "Jan", netRevenue: 1200 },
     { month: "Feb", netRevenue: 1500 },
@@ -57,4 +57,4 @@ const TotalEarningGrowth = () => {
   );
 };
 
-export default TotalEarningGrowth;
+export default TotalUser;

@@ -2,10 +2,9 @@ import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { FaUsers, FaVideo } from "react-icons/fa";
 import { GrServices } from "react-icons/gr";
 import RecentUsers from "../../components/Dashboard/RecentUsers";
-import TotalUser from "../../components/Dashboard/TotalUsers";
-import TotalEarningGrowth from "../../components/Dashboard/TotalEarningGrowth";
 import { useState } from "react";
 import dayjs from "dayjs";
+import TotalUser from "../../components/Dashboard/TotalUser";
 
 function DashboardPage() {
   const [selectedYear, setselectedYear] = useState(dayjs().year());
@@ -64,7 +63,7 @@ function DashboardPage() {
               />
             </div> */}
           </div>
-          <TotalEarningGrowth />
+          <TotalUser />
         </div>
         <div>
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">

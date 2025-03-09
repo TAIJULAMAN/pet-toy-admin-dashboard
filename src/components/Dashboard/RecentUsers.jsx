@@ -92,7 +92,7 @@ const RecentUsers = () => {
           <Table
             dataSource={dataSource}
             columns={columns}
-            // pagination={{ pageSize: 5 }}
+            pagination={{ pageSize: 5 }}
             scroll={{ x: "max-content" }}
           />
         </div>
