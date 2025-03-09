@@ -12,9 +12,9 @@ const TotalEarningGrowth = () => {
     { month: "Jul", netRevenue: 2200 },
     { month: "Aug", netRevenue: 1900 },
     { month: "Sept", netRevenue: 2100 },
-    { month: "Oct", netRevenue: 2300 },
-    { month: "Nov", netRevenue: 2500 },
-    { month: "Dec", netRevenue: 2800 },
+    { month: "Oct", netRevenue: 1300 },
+    { month: "Nov", netRevenue: 1500 },
+    { month: "Dec", netRevenue: 800 },
   ];
 
   const CustomTooltip = ({ active, payload }) => {
@@ -38,8 +38,8 @@ const TotalEarningGrowth = () => {
       >
         <defs>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#0ba593" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#0ba593" stopOpacity={0} />
+            <stop offset="5%" stopColor="#FF0000" stopOpacity={1} />
+            <stop offset="95%" stopColor="#FF0000" stopOpacity={0} />
           </linearGradient>
         </defs>
         <XAxis tickLine={false} dataKey="month" />
@@ -48,7 +48,7 @@ const TotalEarningGrowth = () => {
         <Area
           type="monotone"
           dataKey="netRevenue"
-          stroke="#0ba593"
+          stroke="#FF0000"
           fillOpacity={1}
           fill="url(#colorPv)"
         />

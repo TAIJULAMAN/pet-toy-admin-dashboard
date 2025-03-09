@@ -67,7 +67,7 @@ const RecentUsers = () => {
       key: "action",
       render: () => (
         <button onClick={showModal}>
-          <MdArrowOutward className="text-[#4289FF] w-8 h-8" />
+          <MdArrowOutward className="text-[#FF0000] w-8 h-8" />
         </button>
       ),
     },
@@ -79,10 +79,10 @@ const RecentUsers = () => {
         theme={{
           components: {
             Table: {
-              headerBg: "rgb(19,194,194)",
+              headerBg: "#FF0000",
               headerColor: "rgb(255,255,255)",
-              cellFontSize: 16,
-              headerSplitColor: "rgb(19,194,194)",
+              cellFontSize: 20,
+              // headerSplitColor: "rgb(19,194,194)",
             },
           },
         }}
@@ -92,7 +92,7 @@ const RecentUsers = () => {
           <Table
             dataSource={dataSource}
             columns={columns}
-            pagination={{ pageSize: 5 }}
+            // pagination={{ pageSize: 5 }}
             scroll={{ x: "max-content" }}
           />
         </div>
@@ -104,15 +104,15 @@ const RecentUsers = () => {
           onCancel={handleCancel}
           footer={null}
         >
-          <div className="flex flex-col justify-center items-center p-5">
-            <h1 className="text-xl text-center text-[#00C0B5]">
-              Are you sure?
+          <div className="flex flex-col justify-center items-center py-10">
+            <h1 className="text-3xl text-center text-[#FF0000]">
+              Are you sure!
             </h1>
-            <p>Do you want to block this user profile?</p>
+            <p className="text-xl text-center mt-5">Do you want to block this user profile?</p>
             <div className="text-center py-5 w-full">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="bg-[#00c0b5] text-white font-semibold w-full py-2 px-5 rounded transition duration-200"
+                className="bg-[#FF0000] text-white font-semibold w-1/3 py-2 px-5 rounded transition duration-200"
               >
                 CONFIRM
               </button>
