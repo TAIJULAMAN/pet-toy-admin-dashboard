@@ -21,7 +21,7 @@ const TotalUser = () => {
     if (active && payload && payload.length) {
       const { month, netRevenue } = payload[0].payload;
       return (
-        <div className="custom-tooltip bg-white py-3 px-2 rounded border">
+        <div className="custom-tooltip bg-white py-3 px-2 rounded">
           <p className="label">{`Month: ${month}`}</p>
           <p className="label">{`Revenue: $${netRevenue}`}</p>
         </div>
@@ -34,7 +34,7 @@ const TotalUser = () => {
     <ResponsiveContainer width="100%" height={400}>
       <AreaChart
         data={revenueData}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
       >
         <defs>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">

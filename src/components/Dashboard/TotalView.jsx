@@ -1,4 +1,12 @@
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+/* eslint-disable react/prop-types */
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const demoData = [
   { month: "Jan", videoView: 50 },
@@ -44,9 +52,18 @@ const TotalView = () => {
           }}
         >
           <XAxis tickLine={false} dataKey="month" className="text-gray-600" />
-          <YAxis tickLine={false} domain={[0, maxTrainerCount + 10]} className="text-gray-600" />
+          <YAxis
+            tickLine={false}
+            domain={[0, maxTrainerCount + 10]}
+            className="text-gray-600"
+          />
           <Tooltip content={<CustomTooltip />} />
-          <Bar barSize={30} radius={[5, 5, 0, 0]} dataKey="videoView" fill="#FF0000" />
+          <Bar
+            barSize={30}
+            radius={[5, 5, 0, 0]}
+            dataKey="videoView"
+            fill="#FF0000"
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

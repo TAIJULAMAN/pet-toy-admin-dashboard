@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
       {/* Sidebar Menu */}
       <ul className="mt-10 px-5 mr-10 text-base sm-text-lg md:text-xl">
-        {/* Dashboard */}
+        {/* Dashboard Page */}
         <Link to="/">
           <li
             className={`flex items-center gap-2 md:gap-4 cursor-pointer ${
@@ -54,7 +54,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <li
             className={`flex items-center gap-2 md:gap-4 mt-8 cursor-pointer whitespace-nowrap ${
               isActive("/user-details")
-                ? "bg-[#00C0B5] text-white px-5 py-4 rounded-l-4xl"
+                ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl"
                 : ""
             }`}
           >
@@ -74,33 +74,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           >
             <IoBagAddOutline className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
             <p className="text-xl font-semibold">Add Service</p>
-          </li>
-        </Link>
-
-        {/* Add Roles */}
-        <Link to="/roles">
-          <li
-            className={`flex items-center gap-2 md:gap-4 mt-8 whitespace-nowrap ${
-              isActive("/roles")
-                ? "bg-[#00C0B5] text-white px-5 py-4 rounded-l-4xl"
-                : ""
-            }`}
-          >
-            <IoBagAddOutline className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
-            <p className="text-xl font-semibold">Add Role</p>
-          </li>
-        </Link>
-        {/* Chat */}
-        <Link to="/chat">
-          <li
-            className={`flex items-center gap-2 md:gap-4 mt-8 whitespace-nowrap ${
-              isActive("/chat")
-                ? "bg-[#00C0B5] text-white px-5 py-4 rounded-l-4xl"
-                : ""
-            }`}
-          >
-            <TbBrandWechat className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
-            <p className="text-xl font-semibold">Chat</p>
           </li>
         </Link>
 
