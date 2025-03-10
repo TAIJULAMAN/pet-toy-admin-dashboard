@@ -9,7 +9,6 @@ import {
 } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlinePrivacyTip } from "react-icons/md";
-import { GoQuestion } from "react-icons/go";
 import { SlArrowDown } from "react-icons/sl";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -85,7 +84,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <li
             className={`flex justify-between items-center gap-2 md:gap-4 mt-8 cursor-pointer py-2 whitespace-nowrap ${
               isSettingsActive
-                ? "bg-[#00C0B5] text-white pl-5 pr-2 py-4 rounded-l-4xl"
+                ? "bg-[#FF0000] text-white pl-5 pr-2 py-4 rounded-l-4xl"
                 : ""
             }`}
           >
@@ -103,7 +102,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <Link to="/setting/about-us">
               <li
                 className={`py-[5px] flex items-center gap-2 ${
-                  isActive("/setting/about-us") ? "text-[#00c0b5]" : ""
+                  isActive("/setting/about-us") ? "text-[#FF0000]" : ""
                 }`}
               >
                 <IoMdInformationCircleOutline className="w-5 h-5 text-lg font-semibold" />
@@ -114,29 +113,29 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <Link to="/setting/privacy-policy">
               <li
                 className={`py-[6px] flex items-center gap-4 ${
-                  isActive("/setting/privacy-policy") ? "text-[#00c0b5]" : ""
+                  isActive("/setting/privacy-policy") ? "text-[#FF0000]" : ""
                 }`}
               >
                 <MdOutlinePrivacyTip className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Privacy Policy</p>
               </li>
             </Link>
-            <Link to="/setting/faq">
+            {/* <Link to="/setting/faq">
               <li
                 className={`py-[6px] flex items-center gap-4 ${
-                  isActive("/setting/faq") ? "text-[#00c0b5]" : ""
+                  isActive("/setting/faq") ? "text-[#FF0000]" : ""
                 }`}
               >
                 <GoQuestion className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">FAQ</p>
               </li>
-            </Link>
+            </Link> */}
 
             <Link to="/setting/terms-and-condition">
               <li
                 className={`py-[5px] flex gap-2 items-center  ${
                   isActive("/setting/terms-and-condition")
-                    ? "text-[#00c0b5]"
+                    ? "text-[#FF0000]"
                     : ""
                 }`}
               >

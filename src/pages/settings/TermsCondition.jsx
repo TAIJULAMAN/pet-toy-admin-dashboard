@@ -22,7 +22,7 @@ function TermsCondition() {
       <div className="text-center py-5">
         <button
           onClick={() => console.log(content)}
-         className="bg-[#00c0b5] text-white font-semibold w-full py-2 rounded transition duration-200"
+         className="bg-[#FF0000] text-white font-semibold w-full py-2 rounded transition duration-200"
         >
           Save changes
         </button>
