@@ -133,7 +133,7 @@ function SignInPage() {
                 <button
                   onClick={() => navigate("/")}
                   type="button"
-                  className="w-1/4 bg-[#00C0B5] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5"
+                  className="w-1/4 bg-[#FF0000] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5"
                 >
                   Log In
                 </button>

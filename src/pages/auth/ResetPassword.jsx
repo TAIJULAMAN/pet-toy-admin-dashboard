@@ -73,7 +73,7 @@ function ResetPassword() {
                 <button
                   onClick={() => navigate("/sign-in")}
                   type="button"
-                  className="w-1/2 md:w-1/3 bg-[#00C0B5] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5 whitespace-nowrap"
+                  className="w-1/2 md:w-1/3 bg-[#FF0000] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5 whitespace-nowrap"
                 >
                   Update Password
                 </button>
