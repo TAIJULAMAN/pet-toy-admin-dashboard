@@ -5,16 +5,15 @@ import VerificationCode from "../pages/auth/VerificationCode";
 import ResetPassword from "../pages/auth/ResetPassword";
 import MainLayout from "../layout/MainLayout";
 import DashboardPage from "../pages/dashboard/DashboardPage";
-import ProfilePage from "../pages/profilePage/ProfilePage";
+// import ProfilePage from "../pages/profilePage/ProfilePage";
 import AboutUs from "../pages/settings/AboutUs";
 import Settings from "../pages/settings/Settings";
 import PrivacyPolicy from "../pages/settings/PrivacyPolicy";
 import TermsCondition from "../pages/settings/TermsCondition";
 import FAQ from "../pages/settings/FAQ";
 import UserDetails from "../pages/userDetails/UserDetails";
-import Services from "../pages/services/Services";
-import Chat from "../pages/chat/Chat";
-import Roles from "../pages/role/Role";
+import ProfilePage from "../pages/profile/ProfilePage";
+import VideoList from "../pages/videoList/VideoList";
 
 const router = createBrowserRouter([
   {
@@ -42,19 +41,11 @@ const router = createBrowserRouter([
         path: "/",
         element: <DashboardPage />,
       },
+      {
+        path: "/videoList",
+        element: <VideoList />,
+      },
 
-      {
-        path: "/chat",
-        element: <Chat />,
-      },
-      {
-        path: "/services",
-        element: <Services />,
-      },
-      {
-        path: "/roles",
-        element: <Roles />,
-      },
       {
         path: "/user-details",
         element: <UserDetails />,

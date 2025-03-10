@@ -2,12 +2,15 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaRegBookmark, FaRegUser } from "react-icons/fa";
 import { IoMdInformationCircleOutline, IoMdSettings } from "react-icons/io";
-import { IoBagAddOutline, IoCloseSharp, IoLogInOutline } from "react-icons/io5";
+import {
+  IoCloseSharp,
+  IoLogInOutline,
+  IoVideocamOutline,
+} from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlinePrivacyTip } from "react-icons/md";
 import { GoQuestion } from "react-icons/go";
 import { SlArrowDown } from "react-icons/sl";
-import { TbBrandWechat } from "react-icons/tb";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
@@ -49,7 +52,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </li>
         </Link>
 
-        {/* User Details */}
+        {/* User Details Page */}
         <Link to="/user-details">
           <li
             className={`flex items-center gap-2 md:gap-4 mt-8 cursor-pointer whitespace-nowrap ${
@@ -63,17 +66,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </li>
         </Link>
 
-        {/* Add Service */}
-        <Link to="/services">
+        {/* Video List Page */}
+        <Link to="/videoList">
           <li
             className={`flex items-center gap-2 md:gap-4 mt-8  whitespace-nowrap ${
-              isActive("/services")
-                ? "bg-[#00C0B5] text-white px-5 py-4 rounded-l-4xl"
+              isActive("/videoList")
+                ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl"
                 : ""
             }`}
           >
-            <IoBagAddOutline className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
-            <p className="text-xl font-semibold">Add Service</p>
+            <IoVideocamOutline className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
+            <p className="text-xl font-semibold">Video List</p>
           </li>
         </Link>
 

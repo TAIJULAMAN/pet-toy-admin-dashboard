@@ -1,6 +1,4 @@
-import { AiOutlineFundProjectionScreen } from "react-icons/ai";
-import { FaUsers, FaVideo } from "react-icons/fa";
-import { GrServices } from "react-icons/gr";
+import { FaChevronDown, FaUsers, FaVideo } from "react-icons/fa";
 import RecentUsers from "../../components/Dashboard/RecentUsers";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -8,13 +6,21 @@ import TotalUser from "../../components/Dashboard/TotalUser";
 import TotalView from "../../components/Dashboard/TotalView";
 
 function DashboardPage() {
-  const [selectedYear, setselectedYear] = useState(dayjs().year());
-  const [selectedMonth, setselectedMonth] = useState(dayjs().month() + 1);
-  const onChange = (e) => {
-    const dateString = e.target.value;
-    setselectedYear(dateString.split("-")[0]);
-    setselectedMonth(dateString.split("-")[1]);
+  const currentYear = dayjs().year();
+  const startYear = 1900;
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const years = Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, index) => startYear + index
+  );
+
+  const handleSelect = (year) => {
+    setSelectedYear(year);
+    setIsOpen(false);
   };
+
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-1 md:grid-cols-2 mmd:grid-cols-2 lg:grid-cols-2 gap-5">
@@ -47,36 +53,76 @@ function DashboardPage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5 mt-10">
         <div className="w-full p-5 bg-[#F2F2F2] rounded-lg shadow-md">
-          <div className="flex  items-start md:items-center justify-start">
-            <h1 className="text-3xl font-bold mb-10">Total User Overview</h1>
-            {/* <div className="w-full md:w-auto">
-              <input
-                type="month"
-                value={`${selectedYear}-${String(selectedMonth).padStart(
-                  2,
-                  "0"
-                )}`}
-                onChange={onChange}
-                className="p-2 border border-gray-300 rounded-md w-full"
-              />
-            </div> */}
+          <div className="flex justify-around  items-center text-center gap-5">
+            <h1 className="text-xl font-bold">Total User Overview</h1>
+            <div className="flex justify-center items-center text-xl gap-5">
+              <p>Monthly Growth</p>
+              <p className="font-bold">35.80%</p>
+            </div>
+            <div className="relative w-full md:w-32">
+              {/* Selected Year Display */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md flex justify-between items-center bg-white transition"
+              >
+                <span className="text-[#FF0000]">{selectedYear}</span>
+                <FaChevronDown className="text-[#FF0000] w-5 h-5" />
+              </button>
+
+              {/* Dropdown List */}
+              {isOpen && (
+                <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto shadow-lg">
+                  {years.map((year) => (
+                    <div
+                      key={year}
+                      onClick={() => handleSelect(year)}
+                      className={`p-2 cursor-pointer hover:bg-gray-100 transition ${
+                        year === selectedYear ? "bg-gray-200" : ""
+                      }`}
+                    >
+                      {year}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <TotalUser />
         </div>
         <div className="w-full p-5 bg-[#F2F2F2] rounded-lg shadow-md">
-          <div className="flex  items-start md:items-center justify-start">
-            <h1 className="text-3xl font-bold mb-10">Total Video Overview</h1>
-            {/* <div className="w-full md:w-auto">
-              <input
-                type="month"
-                value={`${selectedYear}-${String(selectedMonth).padStart(
-                  2,
-                  "0"
-                )}`}
-                onChange={onChange}
-                className="p-2 border border-gray-300 rounded-md w-full"
-              />
-            </div> */}
+          <div className="flex justify-around  items-center text-center gap-5">
+            <h1 className="text-xl font-bold">Total Video Overview</h1>
+            <div className="flex justify-center items-center text-xl gap-5">
+              <p>Monthly Growth</p>
+              <p className="font-bold">35.80%</p>
+            </div>
+            <div className="relative w-full md:w-32">
+              {/* Selected Year Display */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md flex justify-between items-center bg-white transition"
+              >
+                <span className="text-[#FF0000]">{selectedYear}</span>
+                <FaChevronDown className="text-[#FF0000] w-5 h-5" />
+              </button>
+
+              {/* Dropdown List */}
+              {isOpen && (
+                <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto shadow-lg">
+                  {years.map((year) => (
+                    <div
+                      key={year}
+                      onClick={() => handleSelect(year)}
+                      className={`p-2 cursor-pointer hover:bg-gray-100 transition ${
+                        year === selectedYear ? "bg-gray-200" : ""
+                      }`}
+                    >
+                      {year}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <TotalView />
         </div>
