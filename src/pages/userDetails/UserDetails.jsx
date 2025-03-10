@@ -240,7 +240,7 @@ function UserDetails() {
   return (
     <div>
       <div className="my-5 md:my-10 flex justify-end items-end">
-        <div className="relative w-full sm:w-[300px] mt-5 md:mt-0 lg:mt-0">
+        <div className="relative w-full sm:w-[300px] ">
           <input
             type="text"
             placeholder="Search..."
