@@ -1,7 +1,34 @@
 /* eslint-disable react/prop-types */
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useState, useEffect } from "react";
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const TotalUser = () => {
+  const [chartHeight, setChartHeight] = useState(400);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 480) {
+        setChartHeight(250); // Adjust height for mobile
+      } else if (window.innerWidth < 768) {
+        setChartHeight(300); // Adjust height for smaller tablets
+      } else {
+        setChartHeight(400); // Default height for larger screens
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call on mount to set the initial height
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const revenueData = [
     { month: "Jan", netRevenue: 1200 },
     { month: "Feb", netRevenue: 1500 },
@@ -31,29 +58,36 @@ const TotalUser = () => {
   };
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <AreaChart
-        data={revenueData}
-        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-      >
-        <defs>
-          <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#FF0000" stopOpacity={1} />
-            <stop offset="95%" stopColor="#FF0000" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <XAxis tickLine={false} dataKey="month" />
-        <YAxis tickLine={false} />
-        <Tooltip content={<CustomTooltip />} />
-        <Area
-          type="monotone"
-          dataKey="netRevenue"
-          stroke="#FF0000"
-          fillOpacity={1}
-          fill="url(#colorPv)"
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+    <div className="chart-container">
+      <ResponsiveContainer width="100%" height={chartHeight}>
+        <AreaChart
+          data={revenueData}
+          margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+        >
+          <defs>
+            <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#FF0000" stopOpacity={1} />
+              <stop offset="95%" stopColor="#FF0000" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <XAxis
+            tickLine={false}
+            dataKey="month"
+            tick={{ fill: "#FF0000", fontSize: 14, fontWeight: "bold" }}
+          />
+
+          <YAxis tickLine={true} />
+          <Tooltip content={<CustomTooltip />} />
+          <Area
+            type="monotone"
+            dataKey="netRevenue"
+            stroke="#FF0000"
+            fillOpacity={1}
+            fill="url(#colorPv)"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 

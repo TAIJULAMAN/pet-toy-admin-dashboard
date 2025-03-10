@@ -10,7 +10,7 @@ import AboutUs from "../pages/settings/AboutUs";
 import Settings from "../pages/settings/Settings";
 import PrivacyPolicy from "../pages/settings/PrivacyPolicy";
 import TermsCondition from "../pages/settings/TermsCondition";
-import FAQ from "../pages/settings/FAQ";
+// import FAQ from "../pages/settings/FAQ";
 import UserDetails from "../pages/userDetails/UserDetails";
 import ProfilePage from "../pages/profile/ProfilePage";
 import VideoList from "../pages/videoList/VideoList";
@@ -55,10 +55,6 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <Settings />,
-      },
-      {
-        path: "/setting/faq",
-        element: <FAQ />,
       },
       {
         path: "/setting/about-us",
