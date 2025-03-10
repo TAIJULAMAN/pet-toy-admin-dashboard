@@ -5,41 +5,40 @@ import DatePicker from "./DatePicker";
 import { useState } from "react";
 import { Modal } from "antd";
 
-
 const petContent = [
   {
     id: 1,
-    videoUrl: "https://www.youtube.com/embed/rTuxUAuJRyY?si=3rALyaAO9Y-xL3iK",
+    videoUrl: "https://www.youtube.com/embed/qOi6kVvuCcs?si=LY7TGGHqorkxoBs_",
     date: "25-04-2025",
     author: "Jacob",
   },
   {
     id: 2,
-    videoUrl: "https://www.youtube.com/embed/rTuxUAuJRyY?si=3rALyaAO9Y-xL3iK",
+    videoUrl: "https://www.youtube.com/embed/duTZ3AG8W6c?si=UAz7vsOgUvKP_d3Y",
     date: "25-04-2025",
     author: "Jacob",
   },
   {
     id: 3,
-    videoUrl: "https://www.youtube.com/embed/rTuxUAuJRyY?si=3rALyaAO9Y-xL3iK",
+    videoUrl: "https://www.youtube.com/embed/jXHOHOYkbYc?si=59ufXvjIPCDsbHjM",
     date: "26-04-2025",
     author: "Emma",
   },
   {
     id: 4,
-    videoUrl: "https://www.youtube.com/embed/rTuxUAuJRyY?si=3rALyaAO9Y-xL3iK",
+    videoUrl: "https://www.youtube.com/embed/pWepfJ-8XU0?si=iWLT-FTwiNstONDZ",
     date: "27-04-2025",
     author: "Lucas",
   },
   {
     id: 5,
-    videoUrl: "https://www.youtube.com/embed/rTuxUAuJRyY?si=3rALyaAO9Y-xL3iK",
+    videoUrl: "https://www.youtube.com/embed/PRAMFqh49b0?si=Qpsdt87gv3UWjzFl",
     date: "28-04-2025",
     author: "Olivia",
   },
   {
     id: 6,
-    videoUrl: "https://www.youtube.com/embed/rTuxUAuJRyY?si=3rALyaAO9Y-xL3iK",
+    videoUrl: "https://www.youtube.com/embed/S1nUMsPC1-0?si=D7tlxlBhfkmF4njo",
     date: "29-04-2025",
     author: "Sophia",
   },
@@ -49,19 +48,19 @@ export default function VideoList() {
   return (
     <div className="mb-10">
       {/* <div className="flex justify-end items-end"> */}
-        <div className="flex flex-col md:flex-row justify-end md:gap-5 items-center">
-          <div className="relative w-full md:w-[300px]">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="border border-[#e5eaf2] py-3 pl-10 pr-[65px] outline-none w-full md:w-[] rounded-md"
-            />
-            <span className=" text-gray-500 absolute top-0 left-0 h-full px-5 flex items-center justify-center rounded-r-md cursor-pointer">
-              <IoSearch className="text-[1.3rem]" />
-            </span>
-          </div>
-          <DatePicker />
+      <div className="flex flex-col md:flex-row justify-end md:gap-5 items-center">
+        <div className="relative w-full md:w-[300px]">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="border border-[#e5eaf2] py-3 pl-10 pr-[65px] outline-none w-full md:w-[] rounded-md"
+          />
+          <span className=" text-gray-500 absolute top-0 left-0 h-full px-5 flex items-center justify-center rounded-r-md cursor-pointer">
+            <IoSearch className="text-[1.3rem]" />
+          </span>
         </div>
+        <DatePicker />
+      </div>
       {/* </div> */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
         {petContent.map((content) => (
