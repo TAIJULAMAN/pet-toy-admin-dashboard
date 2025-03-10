@@ -33,9 +33,9 @@ function DashboardPage() {
                 className=" bg-white rounded-full p-2 w-10 h-10 text-[#FF0000]"
               />
             </p>
-            <p className="text-lg md:text-2xl font-semibold">Total User</p>
+            <p className="text-xl font-semibold">Total User</p>
           </div>
-          <p className="text-[#FF0000] text-3xl font-bold mr-10">1200</p>
+          <p className="text-[#FF0000] text-2xl font-bold mr-10">1200</p>
         </div>
         {/*  Total video */}
         <div className="flex justify-between items-center p-5 bg-[#F2F2F2] rounded-lg shadow-md gap-5 h-30">
@@ -46,19 +46,19 @@ function DashboardPage() {
                 className=" bg-white rounded-full p-2 w-10 h-10 text-[#FF0000]"
               />
             </p>
-            <p className="text-lg md:text-2xl font-semibold">Total video</p>
+            <p className="text-xl font-semibold">Total video</p>
           </div>
-          <p className="text-[#FF0000] text-3xl font-bold mr-10">100</p>
+          <p className="text-[#FF0000] text-2xl font-bold mr-10">100</p>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5 mt-10">
         <div className="w-full p-5 bg-[#F2F2F2] rounded-lg shadow-md">
           <div className="flex flex-col md:flex-row md:justify-between lg:justify-between items-center gap-5 my-5">
             <div>
-              <h1 className="text-xl font-bold">Total User Overview</h1>
+              <h1 className="text-xl font-semibold">Total User Overview</h1>
             </div>
             <div className="flex justify-between items-center gap-5 whitespace-nowrap">
-              <div className="flex justify-start items-center text-xs md:text-xl gap-5">
+              <div className="flex justify-start items-center text-xs md:text-lg gap-5">
                 <p>Monthly Growth</p>
                 <p className="font-bold">35.80%</p>
               </div>
@@ -96,10 +96,10 @@ function DashboardPage() {
         <div className="w-full p-5 bg-[#F2F2F2] rounded-lg shadow-md">
           <div className="flex flex-col md:flex-row md:justify-between lg:justify-between items-center gap-5 my-5">
             <div>
-              <h1 className="text-xl font-bold">Total Video Overview</h1>
+              <h1 className="text-xl font-semibold">Total Video Overview</h1>
             </div>
             <div className="flex justify-between items-center gap-5 whitespace-nowrap">
-              <div className="flex justify-start items-center text-xs md:text-xl gap-5">
+              <div className="flex justify-start items-center text-xs md:text-lg gap-5">
                 <p>Monthly Growth</p>
                 <p className="font-bold">35.80%</p>
               </div>
@@ -115,7 +115,7 @@ function DashboardPage() {
 
                 {/* Dropdown List */}
                 {isOpen && (
-                  <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto shadow-lg">
+                  <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto shadow-lg text-lg">
                     {years.map((year) => (
                       <div
                         key={year}
@@ -136,7 +136,7 @@ function DashboardPage() {
         </div>
       </div>
       <div className="mt-10">
-        <h1 className="text-3xl font-bold mb-10">Recent Joined User</h1>
+        <h1 className="text-2xl font-bold mb-10">Recent Joined User</h1>
         <RecentUsers />
       </div>
     </div>

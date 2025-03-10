@@ -36,11 +36,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </button>
 
       {/* Sidebar Menu */}
-      <ul className="mt-10 px-5 mr-10 text-base sm-text-lg md:text-xl">
+      <ul className="mt-10 px-5 mr-10 text-[10px]">
         {/* Dashboard Page */}
         <Link to="/">
           <li
-            className={`flex items-center gap-2 md:gap-4 cursor-pointer ${
+            className={`flex items-center gap-2 md:gap-4 cursor-pointer transition-all duration-300 ease-in-out ${
               isActive("/")
                 ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl text-lg "
                 : ""
@@ -54,11 +54,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {/* User Details Page */}
         <Link to="/user-details">
           <li
-            className={`flex items-center gap-2 md:gap-4 mt-8 cursor-pointer whitespace-nowrap ${
+            className={`flex items-center gap-2 md:gap-4 mt-8 cursor-pointer transition-all duration-300 ease-in-out ${
               isActive("/user-details")
                 ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl"
                 : ""
             }`}
+            style={{ fontSize: "18px" }} // Customize font size here
           >
             <FaRegUser className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
             <p className="text-xl font-semibold">User Details</p>
@@ -68,11 +69,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {/* Video List Page */}
         <Link to="/videoList">
           <li
-            className={`flex items-center gap-2 md:gap-4 mt-8  whitespace-nowrap ${
+            className={`flex items-center gap-2 md:gap-4 mt-8  whitespace-nowrap transition-all duration-300 ease-in-out ${
               isActive("/videoList")
                 ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl"
                 : ""
             }`}
+            style={{ fontSize: "18px" }} // Customize font size here
           >
             <IoVideocamOutline className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
             <p className="text-xl font-semibold">Video List</p>
@@ -82,11 +84,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {/* Settings */}
         <Link to="/settings">
           <li
-            className={`flex justify-between items-center gap-2 md:gap-4 mt-8 cursor-pointer py-2 whitespace-nowrap ${
+            className={`flex justify-between items-center gap-2 md:gap-4 mt-8 cursor-pointer py-2 whitespace-nowrap transition-all duration-300 ease-in-out ${
               isSettingsActive
                 ? "bg-[#FF0000] text-white pl-5 pr-2 py-4 rounded-l-4xl"
                 : ""
             }`}
+            style={{ fontSize: "18px" }} // Customize font size here
           >
             <div className="flex flex-row justify-between items-center gap-2">
               <IoMdSettings className="w-8 h-8 text-xl font-semibold" />
@@ -101,9 +104,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <ul className="text-start py-3 ml-5">
             <Link to="/setting/about-us">
               <li
-                className={`py-[5px] flex items-center gap-2 ${
+                className={`py-[5px] flex items-center gap-2 transition-all duration-300 ease-in-out ${
                   isActive("/setting/about-us") ? "text-[#FF0000]" : ""
                 }`}
+                style={{ fontSize: "16px" }} // Customize font size here
               >
                 <IoMdInformationCircleOutline className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">About Us</p>
@@ -112,32 +116,24 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
             <Link to="/setting/privacy-policy">
               <li
-                className={`py-[6px] flex items-center gap-4 ${
+                className={`py-[6px] flex items-center gap-4 transition-all duration-300 ease-in-out ${
                   isActive("/setting/privacy-policy") ? "text-[#FF0000]" : ""
                 }`}
+                style={{ fontSize: "16px" }} // Customize font size here
               >
                 <MdOutlinePrivacyTip className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Privacy Policy</p>
               </li>
             </Link>
-            {/* <Link to="/setting/faq">
-              <li
-                className={`py-[6px] flex items-center gap-4 ${
-                  isActive("/setting/faq") ? "text-[#FF0000]" : ""
-                }`}
-              >
-                <GoQuestion className="w-5 h-5 text-lg font-semibold" />
-                <p className="text-lg font-semibold">FAQ</p>
-              </li>
-            </Link> */}
 
             <Link to="/setting/terms-and-condition">
               <li
-                className={`py-[5px] flex gap-2 items-center  ${
+                className={`py-[5px] flex gap-2 items-center transition-all duration-300 ease-in-out ${
                   isActive("/setting/terms-and-condition")
                     ? "text-[#FF0000]"
                     : ""
                 }`}
+                style={{ fontSize: "16px" }} // Customize font size here
               >
                 <FaRegBookmark className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Terms and Conditions</p>
@@ -150,7 +146,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       {/* Logout Button */}
       <div className="absolute mt-5 md:mt-20 lg:mt-20 xl:mt-20 w-full px-4">
         <Link to="/sign-in">
-          <button className="flex items-center gap-4 w-full py-3 rounded-lg">
+          <button className="flex items-center gap-4 w-full py-3 rounded-lg transition-all duration-300 ease-in-out">
             <IoLogInOutline className="w-8 h-8 text-xl font-semibold" />
             <span className="text-xl font-semibold">Logout</span>
           </button>

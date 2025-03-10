@@ -229,7 +229,7 @@ const RecentUsers = () => {
             Table: {
               headerBg: "#FF0000",
               headerColor: "rgb(255,255,255)",
-              cellFontSize: 20,
+              cellFontSize: 16,
               headerSplitColor: "#FF0000",
             },
           },
