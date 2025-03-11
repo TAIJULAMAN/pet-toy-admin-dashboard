@@ -87,7 +87,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 ? "bg-[#FF0000] text-white pl-3 pr-5 py-3 rounded-l-4xl"
                 : ""
             }`}
-          
           >
             <div className="flex flex-row justify-between items-center gap-2">
               <IoMdSettings className="w-5 h-5" />
@@ -116,7 +115,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${
                   isActive("/setting/privacy-policy") ? "text-[#FF0000]" : ""
                 }`}
-             
               >
                 <MdOutlinePrivacyTip className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Privacy Policy</p>
@@ -140,11 +138,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </ul>
 
       {/* Logout Button */}
-      <div className="absolute mt-5 md:mt-20 lg:mt-20 xl:mt-20 w-full px-4">
+      <div className="absolute mt-8 md:mt-20 mmd:mt-20 w-full px-5">
         <Link to="/sign-in">
-          <button className="flex items-center gap-4 w-full py-3 rounded-lg transition-all duration-300 ease-in-out">
-            <IoLogInOutline className="w-8 h-8 text-xl font-semibold" />
-            <span className="text-xl font-semibold">Logout</span>
+          <button
+            className="flex items-center gap-4 w-full py-3 rounded-lg bg-[#a33131] hover:bg-primary duration-200 text-white justify-center "
+            // onClick={handleLogout}
+          >
+            <IoLogInOutline className="w-5 h-5 font-bold" />
+            <span>Logout</span>
           </button>
         </Link>
       </div>
