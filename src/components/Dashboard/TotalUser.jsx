@@ -10,16 +10,16 @@ import {
 } from "recharts";
 
 const TotalUser = () => {
-  const [chartHeight, setChartHeight] = useState(400);
+  const [chartHeight, setChartHeight] = useState(220);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 480) {
+      if (window.innerWidth < 220) {
         setChartHeight(250); // Adjust height for mobile
       } else if (window.innerWidth < 768) {
-        setChartHeight(300); // Adjust height for smaller tablets
+        setChartHeight(220); // Adjust height for smaller tablets
       } else {
-        setChartHeight(400); // Default height for larger screens
+        setChartHeight(220); // Default height for larger screens
       }
     };
 

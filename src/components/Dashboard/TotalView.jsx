@@ -40,24 +40,24 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const TotalView = () => {
-   const [chartHeight, setChartHeight] = useState(400);
-  
-    useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth < 480) {
-          setChartHeight(250); // Adjust height for mobile
-        } else if (window.innerWidth < 768) {
-          setChartHeight(300); // Adjust height for smaller tablets
-        } else {
-          setChartHeight(400); // Default height for larger screens
-        }
-      };
-  
-      window.addEventListener("resize", handleResize);
-      handleResize(); // Call on mount to set the initial height
-  
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+  const [chartHeight, setChartHeight] = useState(220);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 220) {
+        setChartHeight(250); // Adjust height for mobile
+      } else if (window.innerWidth < 768) {
+        setChartHeight(220); // Adjust height for smaller tablets
+      } else {
+        setChartHeight(220); // Default height for larger screens
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call on mount to set the initial height
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div>
       <ResponsiveContainer width="100%" height={chartHeight}>

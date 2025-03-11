@@ -25,7 +25,7 @@ function DashboardPage() {
     <div className="flex flex-col">
       <div className="grid grid-cols-1 md:grid-cols-2 mmd:grid-cols-2 lg:grid-cols-2 gap-5">
         {/* Total User */}
-        <div className="flex justify-between items-center p-5 bg-[#F2F2F2]  gap-5 h-30 rounded-lg shadow-md">
+        <div className="flex justify-between items-center p-5 bg-[#F2F2F2]  gap-5 h-[80px] rounded-lg shadow-md">
           <div className="flex gap-3 items-center">
             <p className="rounded-full flex justify-center items-center">
               <FaUsers
@@ -38,7 +38,7 @@ function DashboardPage() {
           <p className="text-[#FF0000] text-2xl font-bold mr-10">1200</p>
         </div>
         {/*  Total video */}
-        <div className="flex justify-between items-center p-5 bg-[#F2F2F2] rounded-lg shadow-md gap-5 h-30">
+        <div className="flex justify-between items-center p-5 bg-[#F2F2F2] rounded-lg shadow-md gap-5 h-[80px]">
           <div className="flex gap-3 items-center">
             <p className="rounded-full flex justify-center items-center">
               <FaVideo
@@ -51,7 +51,7 @@ function DashboardPage() {
           <p className="text-[#FF0000] text-2xl font-bold mr-10">100</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
         <div className="w-full p-5 bg-[#F2F2F2] rounded-lg shadow-md">
           <div className="flex flex-col md:flex-row md:justify-between lg:justify-between items-center gap-5 my-5">
             <div>
@@ -135,8 +135,8 @@ function DashboardPage() {
           <TotalView />
         </div>
       </div>
-      <div className="mt-10">
-        <h1 className="text-2xl font-bold mb-10">Recent Joined User</h1>
+      <div className="mt-5">
+        <h1 className="text-2xl font-bold mb-5">Recent Joined User</h1>
         <RecentUsers />
       </div>
     </div>
