@@ -1,6 +1,6 @@
 import { ConfigProvider, Modal, Table } from "antd";
 import { useState } from "react";
-import { MdArrowOutward } from "react-icons/md";
+import {  MdBlockFlipped } from "react-icons/md";
 
 const RecentUsers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -204,7 +204,7 @@ const RecentUsers = () => {
       key: "action",
       render: () => (
         <button onClick={showModal}>
-          <MdArrowOutward className="text-[#FF0000] w-8 h-8" />
+          <MdBlockFlipped  className="text-[#FF0000] w-8 h-8" />
         </button>
       ),
     },

@@ -1,7 +1,7 @@
 import { ConfigProvider, Modal, Table } from "antd";
 import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
-import { MdArrowOutward } from "react-icons/md";
+import { MdBlockFlipped } from "react-icons/md";
 
 function UserDetails() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -193,8 +193,7 @@ function UserDetails() {
       location: "Munich, Germany",
     },
   ];
-  
-  
+
   const columns = [
     {
       title: "No",
@@ -231,7 +230,7 @@ function UserDetails() {
       key: "action",
       render: () => (
         <button className="" onClick={showModal}>
-          <MdArrowOutward className="text-[#FF0000] w-10 h-10" />
+          <MdBlockFlipped className="text-[#FF0000] w-10 h-10" />
         </button>
       ),
     },
