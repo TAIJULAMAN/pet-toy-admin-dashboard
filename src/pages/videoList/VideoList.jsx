@@ -46,23 +46,21 @@ const petContent = [
 
 export default function VideoList() {
   return (
-    <div className="mb-10">
-      {/* <div className="flex justify-end items-end"> */}
+    <div className="mb-5">
       <div className="flex flex-col md:flex-row justify-end md:gap-5 items-center">
-        <div className="relative w-full md:w-[300px]">
+        <div className="relative w-full md:w-[320px]">
           <input
             type="text"
             placeholder="Search..."
-            className="border border-[#e5eaf2] py-3 pl-10 pr-[65px] outline-none w-full md:w-[] rounded-md"
+            className="border border-[#e5eaf2] py-3 pl-10 pr-[65px] outline-none w-full md:w-full rounded-md"
           />
-          <span className=" text-gray-500 absolute top-0 left-0 h-full px-5 flex items-center justify-center rounded-r-md cursor-pointer">
+          <span className="text-gray-500 absolute top-0 left-0 h-full px-5 flex items-center justify-center rounded-r-md cursor-pointer">
             <IoSearch className="text-[1.3rem]" />
           </span>
         </div>
         <DatePicker />
       </div>
-      {/* </div> */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
         {petContent.map((content) => (
           <PetVideoCard key={content.id} content={content} />
         ))}
@@ -97,14 +95,14 @@ function PetVideoCard({ content }) {
         ></iframe>
       </div>
 
-      <div className="p-3 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 border border-gray-200 rounded-full">
+      <div className="p-5 flex justify-between items-center">
+        <div className="flex items-center space-x-3">
+          <div className="h-9 w-9 border border-gray-200 rounded-full">
             <img
               src="https://avatar.iran.liara.run/public/14"
               alt={content.author}
-              width={32}
-              height={32}
+              width={36}
+              height={36}
               className="rounded-full"
             />
           </div>
@@ -122,12 +120,12 @@ function PetVideoCard({ content }) {
           onCancel={handleCancel}
           footer={null}
         >
-          <div className="flex flex-col justify-center items-center py-10">
-            <h1 className="text-4xl text-center text-[#0D0D0D]">
+          <div className="flex flex-col justify-center items-center py-12">
+            <h1 className="text-3xl text-center text-[#0D0D0D]">
               Are you sure you want to delete?
             </h1>
 
-            <div className="text-center py-5 w-full">
+            <div className="text-center py-6 w-full">
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="bg-[#FF0000] text-white font-semibold w-full py-3 px-5 rounded-lg"

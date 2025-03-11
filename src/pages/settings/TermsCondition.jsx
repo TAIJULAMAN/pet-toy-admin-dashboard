@@ -9,7 +9,7 @@ function TermsCondition() {
 
   return (
     <div className="p-5">
-      <h1 className="text-start text-3xl font-bold mb-5">Terms Condition</h1>
+      <h1 className="text-start text-3xl font-bold mb-5">Terms & Condition</h1>
 
       <div className=" bg-white rounded shadow p-5 h-full">
         <ReactQuill

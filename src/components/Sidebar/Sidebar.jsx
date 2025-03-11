@@ -23,7 +23,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`fixed lg:static bg-white text-[#0D0D0D] w-[70%] sm:w-[70%] md:w-[20%] lg:w-[20%] h-screen overflow-y-auto py-5 md:py-0 z-50 transition-transform ${
+      className={`fixed lg:static bg-white text-[#0D0D0D] w-[70%] sm:w-[70%] md:w-[15%] lg:w-[15%] h-screen overflow-y-auto py-5 md:py-0 z-50 transition-transform ${
         isOpen ? "translate-x-0 top-0 left-0 " : "-translate-x-full"
       } lg:translate-x-0`}
     >
@@ -36,7 +36,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </button>
 
       {/* Sidebar Menu */}
-      <ul className="mt-10 px-5 text-[10px]">
+      <ul className="mt-10 pl-5 text-[10px]">
         {/* Dashboard Page */}
         <Link to="/">
           <li

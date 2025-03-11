@@ -239,7 +239,7 @@ function UserDetails() {
 
   return (
     <div>
-      <div className="my-5 md:my-10 flex justify-end items-end">
+      <div className="my-5 flex justify-end items-end">
         <div className="relative w-full sm:w-[300px] ">
           <input
             type="text"
@@ -268,7 +268,7 @@ function UserDetails() {
             Table: {
               headerBg: "#FF0000",
               headerColor: "rgb(255,255,255)",
-              cellFontSize: 20,
+              cellFontSize: 16,
               headerSplitColor: "#FF0000",
             },
           },

@@ -24,7 +24,7 @@ export default function DatePicker() {
       const day = new Date(year, month, i);
       const dayString = day.toLocaleDateString("en-US");
       let className =
-        "flex items-center justify-center cursor-pointer w-[46px] h-[46px] rounded-full text-dark-3 dark:text-dark-6 hover:bg-primary hover:text-white";
+        "flex items-center justify-center cursor-pointer w-[46px] h-[46px] rounded-full text-[#0d0d0d]";
 
       if (selectedStartDate && dayString === selectedStartDate) {
         className += " bg-primary text-white dark:text-white rounded-r-none";
