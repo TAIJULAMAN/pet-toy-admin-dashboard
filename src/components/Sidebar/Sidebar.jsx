@@ -36,66 +36,64 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </button>
 
       {/* Sidebar Menu */}
-      <ul className="mt-10 px-5 mr-10 text-[10px]">
+      <ul className="mt-10 px-5 text-[10px]">
         {/* Dashboard Page */}
         <Link to="/">
           <li
-            className={`flex items-center gap-2 md:gap-4 cursor-pointer transition-all duration-300 ease-in-out ${
+            className={`flex items-center gap-2 cursor-pointer transition-all duration-300 ease-in-out ${
               isActive("/")
-                ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl text-lg "
+                ? "bg-[#FF0000] text-white px-3 py-3 rounded-l-4xl"
                 : ""
             }`}
           >
-            <RxDashboard className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
-            <p className="text-xl font-semibold">Dashboard</p>
+            <RxDashboard className="w-5 h-5" />
+            <p className="text-lg font-semibold">Dashboard</p>
           </li>
         </Link>
 
         {/* User Details Page */}
         <Link to="/user-details">
           <li
-            className={`flex items-center gap-2 md:gap-4 mt-8 cursor-pointer transition-all duration-300 ease-in-out ${
+            className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out ${
               isActive("/user-details")
-                ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl"
+                ? "bg-[#FF0000] text-white px-3 py-3 rounded-l-4xl"
                 : ""
             }`}
-            style={{ fontSize: "18px" }} // Customize font size here
           >
-            <FaRegUser className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
-            <p className="text-xl font-semibold">User Details</p>
+            <FaRegUser className="w-5 h-5" />
+            <p className="text-lg font-semibold">User Details</p>
           </li>
         </Link>
 
         {/* Video List Page */}
         <Link to="/videoList">
           <li
-            className={`flex items-center gap-2 md:gap-4 mt-8  whitespace-nowrap transition-all duration-300 ease-in-out ${
+            className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out ${
               isActive("/videoList")
-                ? "bg-[#FF0000] text-white px-5 py-4 rounded-l-4xl"
+                ? "bg-[#FF0000] text-white px-3 py-3 rounded-l-4xl"
                 : ""
             }`}
-            style={{ fontSize: "18px" }} // Customize font size here
           >
-            <IoVideocamOutline className="w-5 md:w-8 h-5 md:h-8 text-xl font-semibold" />
-            <p className="text-xl font-semibold">Video List</p>
+            <IoVideocamOutline className="w-5 h-5" />
+            <p className="text-lg font-semibold">Video List</p>
           </li>
         </Link>
 
         {/* Settings */}
         <Link to="/settings">
           <li
-            className={`flex justify-between items-center gap-2 md:gap-4 mt-8 cursor-pointer py-2 whitespace-nowrap transition-all duration-300 ease-in-out ${
+            className={`flex justify-between items-center gap-2 mt-5 cursor-pointer py-2 whitespace-nowrap transition-all duration-300 ease-in-out ${
               isSettingsActive
-                ? "bg-[#FF0000] text-white pl-5 pr-2 py-4 rounded-l-4xl"
+                ? "bg-[#FF0000] text-white pl-3 pr-5 py-3 rounded-l-4xl"
                 : ""
             }`}
-            style={{ fontSize: "18px" }} // Customize font size here
+          
           >
             <div className="flex flex-row justify-between items-center gap-2">
-              <IoMdSettings className="w-8 h-8 text-xl font-semibold" />
-              <p className="text-xl font-semibold">Settings</p>
+              <IoMdSettings className="w-5 h-5" />
+              <p className="text-lg font-semibold">Settings</p>
             </div>
-            <SlArrowDown className="w-5  h-5  text-xl font-bold" />
+            <SlArrowDown className="w-5 h-5" />
           </li>
         </Link>
 
@@ -107,7 +105,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 className={`py-[5px] flex items-center gap-2 transition-all duration-300 ease-in-out ${
                   isActive("/setting/about-us") ? "text-[#FF0000]" : ""
                 }`}
-                style={{ fontSize: "16px" }} // Customize font size here
               >
                 <IoMdInformationCircleOutline className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">About Us</p>
@@ -116,10 +113,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
             <Link to="/setting/privacy-policy">
               <li
-                className={`py-[6px] flex items-center gap-4 transition-all duration-300 ease-in-out ${
+                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${
                   isActive("/setting/privacy-policy") ? "text-[#FF0000]" : ""
                 }`}
-                style={{ fontSize: "16px" }} // Customize font size here
+             
               >
                 <MdOutlinePrivacyTip className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Privacy Policy</p>
@@ -128,12 +125,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
             <Link to="/setting/terms-and-condition">
               <li
-                className={`py-[5px] flex gap-2 items-center transition-all duration-300 ease-in-out ${
+                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${
                   isActive("/setting/terms-and-condition")
                     ? "text-[#FF0000]"
                     : ""
                 }`}
-                style={{ fontSize: "16px" }} // Customize font size here
               >
                 <FaRegBookmark className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Terms and Conditions</p>
