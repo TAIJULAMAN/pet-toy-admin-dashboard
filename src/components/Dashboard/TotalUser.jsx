@@ -73,10 +73,14 @@ const TotalUser = () => {
           <XAxis
             tickLine={false}
             dataKey="month"
-            tick={{ fill: "#FF0000", fontSize: 14, fontWeight: "bold" }}
+             className="text-gray-600"
           />
 
-          <YAxis tickLine={true} />
+          {/* <YAxis tickLine={true} /> */}
+            <YAxis
+                      tickLine={false}
+                      className="text-gray-600"
+                    />
           <Tooltip content={<CustomTooltip />} />
           <Area
             type="monotone"
