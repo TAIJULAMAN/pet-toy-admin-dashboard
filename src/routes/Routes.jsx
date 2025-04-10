@@ -14,6 +14,7 @@ import TermsCondition from "../pages/settings/TermsCondition";
 import UserDetails from "../pages/userDetails/UserDetails";
 import ProfilePage from "../pages/profile/ProfilePage";
 import VideoList from "../pages/videoList/VideoList";
+import SoundLibrary from "../pages/SoundLibrary/SoundLibrary";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,10 @@ const router = createBrowserRouter([
         path: "/videoList",
         element: <VideoList />,
       },
-
+      {
+        path: "/sound-library",
+        element: <SoundLibrary />,
+      },
       {
         path: "/user-details",
         element: <UserDetails />,

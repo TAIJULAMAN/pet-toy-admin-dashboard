@@ -8,7 +8,7 @@ import {
   IoVideocamOutline,
 } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
-import { MdOutlinePrivacyTip } from "react-icons/md";
+import { MdAudiotrack, MdOutlinePrivacyTip } from "react-icons/md";
 import { SlArrowDown } from "react-icons/sl";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -23,9 +23,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`fixed lg:static bg-white text-[#0D0D0D] w-[70%] sm:w-[70%] md:w-[15%] lg:w-[15%] h-screen overflow-y-auto py-5 md:py-0 z-50 transition-transform ${
-        isOpen ? "translate-x-0 top-0 left-0 " : "-translate-x-full"
-      } lg:translate-x-0`}
+      className={`fixed lg:static bg-white text-[#0D0D0D] w-[70%] sm:w-[70%] md:w-[15%] lg:w-[15%] h-screen overflow-y-auto py-5 md:py-0 z-50 transition-transform ${isOpen ? "translate-x-0 top-0 left-0 " : "-translate-x-full"
+        } lg:translate-x-0`}
     >
       {/* Close Button (Mobile Only) */}
       <button
@@ -40,11 +39,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {/* Dashboard Page */}
         <Link to="/">
           <li
-            className={`flex items-center gap-2 cursor-pointer transition-all duration-300 ease-in-out ${
-              isActive("/")
+            className={`flex items-center gap-2 cursor-pointer transition-all duration-300 ease-in-out ${isActive("/")
                 ? "bg-[#FF0000] text-white px-3 py-3 rounded-l-4xl"
                 : ""
-            }`}
+              }`}
           >
             <RxDashboard className="w-5 h-5" />
             <p className="text-lg font-semibold">Dashboard</p>
@@ -54,11 +52,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {/* User Details Page */}
         <Link to="/user-details">
           <li
-            className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out ${
-              isActive("/user-details")
+            className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out ${isActive("/user-details")
                 ? "bg-[#FF0000] text-white px-3 py-3 rounded-l-4xl"
                 : ""
-            }`}
+              }`}
           >
             <FaRegUser className="w-5 h-5" />
             <p className="text-lg font-semibold">User Details</p>
@@ -68,25 +65,35 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {/* Video List Page */}
         <Link to="/videoList">
           <li
-            className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out ${
-              isActive("/videoList")
+            className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out ${isActive("/videoList")
                 ? "bg-[#FF0000] text-white px-3 py-3 rounded-l-4xl"
                 : ""
-            }`}
+              }`}
           >
             <IoVideocamOutline className="w-5 h-5" />
             <p className="text-lg font-semibold">Video List</p>
+          </li>
+        </Link>
+        {/* Sound Library Page */}
+        <Link to="/sound-library">
+          <li
+            className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out ${isActive("/sound-library")
+                ? "bg-[#FF0000] text-white px-3 py-3 rounded-l-4xl"
+                : ""
+              }`}
+          >
+            <MdAudiotrack className="w-5 h-5" />
+            <p className="text-lg font-semibold">Sound Library</p>
           </li>
         </Link>
 
         {/* Settings */}
         <Link to="/settings">
           <li
-            className={`flex justify-between items-center gap-2 mt-5 cursor-pointer py-2 whitespace-nowrap transition-all duration-300 ease-in-out ${
-              isSettingsActive
+            className={`flex justify-between items-center gap-2 mt-5 cursor-pointer py-2 whitespace-nowrap transition-all duration-300 ease-in-out ${isSettingsActive
                 ? "bg-[#FF0000] text-white pl-3 pr-5 py-3 rounded-l-4xl"
                 : ""
-            }`}
+              }`}
           >
             <div className="flex flex-row justify-between items-center gap-2">
               <IoMdSettings className="w-5 h-5" />
@@ -101,9 +108,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <ul className="text-start py-3 ml-5">
             <Link to="/setting/about-us">
               <li
-                className={`py-[5px] flex items-center gap-2 transition-all duration-300 ease-in-out ${
-                  isActive("/setting/about-us") ? "text-[#FF0000]" : ""
-                }`}
+                className={`py-[5px] flex items-center gap-2 transition-all duration-300 ease-in-out ${isActive("/setting/about-us") ? "text-[#FF0000]" : ""
+                  }`}
               >
                 <IoMdInformationCircleOutline className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">About Us</p>
@@ -112,9 +118,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
             <Link to="/setting/privacy-policy">
               <li
-                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${
-                  isActive("/setting/privacy-policy") ? "text-[#FF0000]" : ""
-                }`}
+                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${isActive("/setting/privacy-policy") ? "text-[#FF0000]" : ""
+                  }`}
               >
                 <MdOutlinePrivacyTip className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Privacy Policy</p>
@@ -123,11 +128,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
             <Link to="/setting/terms-and-condition">
               <li
-                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${
-                  isActive("/setting/terms-and-condition")
+                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${isActive("/setting/terms-and-condition")
                     ? "text-[#FF0000]"
                     : ""
-                }`}
+                  }`}
               >
                 <FaRegBookmark className="w-5 h-5 text-lg font-semibold" />
                 <p className="text-lg font-semibold">Terms and Conditions</p>
@@ -142,7 +146,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <Link to="/sign-in">
           <button
             className="flex items-center gap-4 w-full py-3 rounded-lg bg-[#a33131] hover:bg-primary duration-200 text-white justify-center "
-            // onClick={handleLogout}
+          // onClick={handleLogout}
           >
             <IoLogInOutline className="w-5 h-5 font-bold" />
             <span>Logout</span>
