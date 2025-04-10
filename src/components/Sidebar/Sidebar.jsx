@@ -83,7 +83,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               }`}
           >
             <MdAudiotrack className="w-5 h-5" />
-            <p className="text-lg font-semibold">Sound Library</p>
+            <p className="text-lg font-semibold">Add Sound Library</p>
           </li>
         </Link>
 
