@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useVerifyEmailMutation } from "../../Redux/api/auth/authApi";
+import Swal from "sweetalert2";
 
 function VerificationCode() {
-  const [code, setCode] = useState(new Array(5).fill(""));
+  const [code, setCode] = useState(new Array(4).fill(""));
 
   const navigate = useNavigate();
+  const [verifyEmail, { isLoading, error }] = useVerifyEmailMutation();
 
   const handleChange = (value, index) => {
     if (!isNaN(value)) {
@@ -12,14 +15,41 @@ function VerificationCode() {
       newCode[index] = value;
       setCode(newCode);
 
-      if (value && index < 5) {
+      if (value && index < 3) {
         document.getElementById(`code-${index + 1}`).focus();
       }
     }
   };
 
-  const handleVerifyCode = async () => {
-    navigate(`/new-password`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const joined = code.join("");
+    if (!/^\d{4}$/.test(joined)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid code",
+        text: "Please enter the 4 digit code.",
+      });
+      return;
+    }
+    const verificationCode = Number(joined);
+    try {
+      const res = await verifyEmail({ verificationCode }).unwrap();
+      Swal.fire({
+        icon: "success",
+        title: "Verified",
+        text: res?.message || "Code verified successfully.",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+      navigate(`/new-password`);
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Verification failed",
+        text: err?.data?.message || "Invalid or expired code.",
+      });
+    }
   };
 
   return (
@@ -32,12 +62,12 @@ function VerificationCode() {
             </h2>
             <div className="flex flex-col items-center justify-center text-center">
               <p className="text-[#6A6D76] mb-10 w-full md:w-2/3 ">
-                We sent a reset link to contact@dscode...com enter 5 digit code
+                We sent a reset link to contact@dscode...com enter 4 digit code
                 that is mentioned in the email.
               </p>
             </div>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="flex justify-center gap-2">
                 {code.map((digit, index) => (
                   <input
@@ -51,20 +81,21 @@ function VerificationCode() {
                   />
                 ))}
               </div>
+              <div className="flex justify-center items-center my-5">
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-1/3 bg-[#FF0000] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5 disabled:opacity-60"
+                >
+                  {isLoading ? "Verifying..." : "Verify Code"}
+                </button>
+              </div>
+              {error ? (
+                <p className="text-red-600 text-center">
+                  {error?.data?.message || "Verification failed."}
+                </p>
+              ) : null}
             </form>
-            <div className="flex justify-center items-center my-5">
-              <button
-                onClick={handleVerifyCode}
-                type="button"
-                className="w-1/3 bg-[#FF0000] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5"
-              >
-                Verify Code
-              </button>
-            </div>
-            <p className="text-[#6A6D76] text-center mb-10">
-              You have not received the email?{" "}
-              <span className="text-[#00B047]"> Resend</span>
-            </p>
           </div>
         </div>
       </div>

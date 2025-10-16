@@ -1,7 +1,34 @@
 import { useNavigate } from "react-router-dom";
+import { useForgotPasswordMutation } from "../../Redux/api/auth/authApi";
+import Swal from "sweetalert2";
 
 function ForgetPassword() {
   const navigate = useNavigate();
+  const [forgotPassword, { isLoading, error }] = useForgotPasswordMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = form.email.value.trim();
+
+    try {
+      const res = await forgotPassword({ email }).unwrap();
+      Swal.fire({
+        icon: "success",
+        title: "Code sent",
+        text: res?.message || "Verification code has been sent to your email.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      navigate("/verification-code");
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Request failed",
+        text: err?.data?.message || "Unable to send verification code.",
+      });
+    }
+  };
 
   return (
     <div className="bg-white min-h-screen flex items-center justify-center p-5">
@@ -11,7 +38,7 @@ function ForgetPassword() {
             <h2 className="text-[#0D0D0D] text-2xl  font-bold text-center mb-5">
               Forgot password ?
             </h2>
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <label className="text-xl text-[#0D0D0D] mb-2 font-bold">
                   Email
@@ -27,13 +54,16 @@ function ForgetPassword() {
 
               <div className="flex justify-center items-center">
                 <button
-                  onClick={() => navigate("/verification-code")}
-                  type="button"
-                  className="whitespace-nowrap w-1/3 bg-[#FF0000] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5"
+                  type="submit"
+                  disabled={isLoading}
+                  className="whitespace-nowrap w-1/3 bg-[#FF0000] text-white font-semibold py-2 rounded-lg shadow-lg cursor-pointer mt-5 disabled:opacity-60"
                 >
-                  Send Code
+                  {isLoading ? "Sending..." : "Send Code"}
                 </button>
               </div>
+              {error ? (
+                <p className="text-red-600 text-center">{error?.data?.message || "Request failed."}</p>
+              ) : null}
             </form>
           </div>
         </div>

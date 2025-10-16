@@ -1,5 +1,5 @@
 {
-  "name": "service-provider-dashboard",
+  "name": "pet-toy-admin-dashboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -23,7 +23,8 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^7.1.5",
     "recharts": "^2.15.1",
-    "tailwindcss": "^4.0.3"
+    "tailwindcss": "^4.0.3",
+    "sweetalert2": "^11.14.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
