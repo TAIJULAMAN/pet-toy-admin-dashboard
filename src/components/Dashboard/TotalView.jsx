@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -9,22 +9,58 @@ import {
   YAxis,
 } from "recharts";
 
-const demoData = [
-  { month: "Jan", videoView: 50 },
-  { month: "Feb", videoView: 70 },
-  { month: "Mar", videoView: 60 },
-  { month: "Apr", videoView: 80 },
-  { month: "May", videoView: 90 },
-  { month: "Jun", videoView: 75 },
-  { month: "Jul", videoView: 85 },
-  { month: "Aug", videoView: 95 },
-  { month: "Sep", videoView: 70 },
-  { month: "Oct", videoView: 80 },
-  { month: "Nov", videoView: 100 },
-  { month: "Dec", videoView: 110 },
+const monthShort = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
-const maxTrainerCount = Math.max(...demoData.map((item) => item.trainer), 100);
+const normalizeData = (apiData, year) => {
+  if (!apiData) return null;
+
+  if (Array.isArray(apiData.monthlyStats)) {
+    const source = year
+      ? apiData.monthlyStats.filter((d) => Number(d.year) === Number(year))
+      : apiData.monthlyStats;
+    return source.map((d) => {
+      const idx = Number(d.month) - 1;
+      const label = monthShort[idx] ?? String(d.month);
+      return { month: label, videoView: Number(d.count) || 0 };
+    });
+  }
+
+  if (Array.isArray(apiData)) {
+    // Generic fallback if API returns array of objects with month/count
+    return apiData
+      .map((d) => {
+        const m = d.month || d.monthName || d.name;
+        const v = d.count ?? d.total ?? d.value ?? d.videoView;
+        if (!m || v == null) return null;
+        const idx = monthShort.findIndex(
+          (s) => s.toLowerCase() === String(m).slice(0, 3).toLowerCase()
+        );
+        const label = idx >= 0 ? monthShort[idx] : String(m);
+        return { month: label, videoView: Number(v) };
+      })
+      .filter(Boolean);
+  }
+
+  const obj = apiData.monthly || apiData.months || apiData.data;
+  if (obj && typeof obj === "object" && !Array.isArray(obj)) {
+    return monthShort.map((m) => ({ month: m, videoView: Number(obj[m]) || 0 }));
+  }
+
+  return null;
+};
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -32,14 +68,14 @@ const CustomTooltip = ({ active, payload }) => {
     return (
       <div className="bg-white shadow-md p-3 rounded-md border text-gray-700">
         <p className="font-medium">Month: {month}</p>
-        <p className="font-medium">Trainers: {videoView}</p>
+        <p className="font-medium">Videos: {videoView}</p>
       </div>
     );
   }
   return null;
 };
 
-const TotalView = () => {
+const TotalView = ({ data, year }) => {
   const [chartHeight, setChartHeight] = useState(220);
 
   useEffect(() => {
@@ -58,11 +94,22 @@ const TotalView = () => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const zeroData = monthShort.map((m) => ({ month: m, videoView: 0 }));
+
+  const chartData = useMemo(() => {
+    const normalized = normalizeData(data, year);
+    return normalized && normalized.length ? normalized : zeroData;
+  }, [data, year]);
+
+  const maxValue = useMemo(() => {
+    return Math.max(...chartData.map((d) => d.videoView), 0);
+  }, [chartData]);
+
   return (
     <div>
       <ResponsiveContainer width="100%" height={chartHeight}>
         <BarChart
-          data={demoData}
+          data={chartData}
           margin={{
             top: 0,
             right: 0,
@@ -73,7 +120,8 @@ const TotalView = () => {
           <XAxis tickLine={false} dataKey="month" className="text-gray-600" />
           <YAxis
             tickLine={false}
-            domain={[0, maxTrainerCount + 10]}
+            allowDecimals={false}
+            domain={[0, Math.max(maxValue, 10)]}
             className="text-gray-600"
           />
           <Tooltip content={<CustomTooltip />} />

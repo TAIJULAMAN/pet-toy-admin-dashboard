@@ -11,7 +11,7 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth?.token);
   const decoded = decodeAuthToken(token);
-  console.log("decoded", decoded);
+  // console.log("decoded", decoded);
   const userId = decoded?.id;
 
   const [resetPassword, { isLoading, error }] = useResetPasswordMutation();
@@ -23,20 +23,35 @@ export default function ResetPassword() {
     const confirmPassword = form.confirmPassword.value;
 
     if (!userId) {
-      Swal.fire({ icon: "error", title: "Missing user", text: "User is not authenticated." });
+      Swal.fire({
+        icon: "error",
+        title: "Missing user",
+        text: "User is not authenticated.",
+      });
       return;
     }
-
     if (!password || !confirmPassword) {
-      Swal.fire({ icon: "error", title: "Required", text: "Please fill both password fields." });
+      Swal.fire({
+        icon: "error",
+        title: "Required",
+        text: "Please fill both password fields.",
+      });
       return;
     }
     if (password !== confirmPassword) {
-      Swal.fire({ icon: "error", title: "Mismatch", text: "Passwords do not match." });
+      Swal.fire({
+        icon: "error",
+        title: "Mismatch",
+        text: "Passwords do not match.",
+      });
       return;
     }
+
     try {
-      const res = await resetPassword({ userId: String(userId), password }).unwrap();
+      const res = await resetPassword({
+        userId: String(userId),
+        password,
+      }).unwrap();
       Swal.fire({
         icon: "success",
         title: "Password updated",
@@ -46,7 +61,11 @@ export default function ResetPassword() {
       });
       navigate("/sign-in");
     } catch (err) {
-      Swal.fire({ icon: "error", title: "Update failed", text: err?.data?.message || "Unable to reset password." });
+      Swal.fire({
+        icon: "error",
+        title: "Update failed",
+        text: err?.data?.message || "Unable to reset password.",
+      });
     }
   };
 
@@ -123,7 +142,9 @@ export default function ResetPassword() {
                 </button>
               </div>
               {error ? (
-                <p className="text-red-600 text-center">{error?.data?.message || "Unable to reset password."}</p>
+                <p className="text-red-600 text-center">
+                  {error?.data?.message || "Unable to reset password."}
+                </p>
               ) : null}
             </form>
           </div>

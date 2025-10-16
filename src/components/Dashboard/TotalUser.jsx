@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Area,
   AreaChart,
@@ -9,7 +9,67 @@ import {
   YAxis,
 } from "recharts";
 
-const TotalUser = () => {
+const monthShort = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const normalizeData = (apiData, year) => {
+  // Accepts various shapes and returns [{ month: 'Jan', netRevenue: number }]
+  if (!apiData) return null;
+
+  // Shape 0: { monthlyStats: [{ month: 10, count: 10 }, ...] }
+  if (Array.isArray(apiData.monthlyStats)) {
+    const source = year
+      ? apiData.monthlyStats.filter((d) => Number(d.year) === Number(year))
+      : apiData.monthlyStats;
+    const mapped = source.map((d) => {
+      const idx = Number(d.month) - 1;
+      const label = monthShort[idx] ?? String(d.month);
+      return { month: label, netRevenue: Number(d.count) || 0 };
+    });
+    return mapped;
+  }
+
+  // Shape A: [{ month: 'Jan', count: 10 }] or { monthName, total }
+  if (Array.isArray(apiData)) {
+    const mapped = apiData
+      .map((d) => {
+        const m = d.month || d.monthName || d.name;
+        const v = d.count ?? d.total ?? d.value ?? d.users ?? d.netRevenue;
+        if (!m || v == null) return null;
+        // Try to coerce month to short label
+        const idx = monthShort.findIndex(
+          (s) => s.toLowerCase() === String(m).slice(0, 3).toLowerCase()
+        );
+        const label = idx >= 0 ? monthShort[idx] : String(m);
+        return { month: label, netRevenue: Number(v) };
+      })
+      .filter(Boolean);
+    if (mapped.length) return mapped;
+  }
+
+  // Shape B: { monthly: { Jan: 1, Feb: 2, ... } } or { months: {...} }
+  const obj = apiData.monthly || apiData.months || apiData.data;
+  if (obj && typeof obj === "object" && !Array.isArray(obj)) {
+    const mapped = monthShort.map((m) => ({ month: m, netRevenue: Number(obj[m]) || 0 }));
+    return mapped;
+  }
+
+  return null;
+};
+
+const TotalUser = ({ data, year }) => {
   const [chartHeight, setChartHeight] = useState(220);
 
   useEffect(() => {
@@ -29,20 +89,12 @@ const TotalUser = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const revenueData = [
-    { month: "Jan", netRevenue: 1200 },
-    { month: "Feb", netRevenue: 1500 },
-    { month: "Mar", netRevenue: 800 },
-    { month: "Apr", netRevenue: 1600 },
-    { month: "May", netRevenue: 2000 },
-    { month: "Jun", netRevenue: 1700 },
-    { month: "Jul", netRevenue: 2200 },
-    { month: "Aug", netRevenue: 1900 },
-    { month: "Sept", netRevenue: 2100 },
-    { month: "Oct", netRevenue: 1300 },
-    { month: "Nov", netRevenue: 1500 },
-    { month: "Dec", netRevenue: 800 },
-  ];
+  const zeroData = monthShort.map((m) => ({ month: m, netRevenue: 0 }));
+
+  const chartData = useMemo(() => {
+    const normalized = normalizeData(data, year);
+    return normalized && normalized.length ? normalized : zeroData;
+  }, [data, year]);
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -50,7 +102,7 @@ const TotalUser = () => {
       return (
         <div className="custom-tooltip bg-white py-3 px-2 rounded">
           <p className="label">{`Month: ${month}`}</p>
-          <p className="label">{`Revenue: $${netRevenue}`}</p>
+          <p className="label">{`Users: ${netRevenue}`}</p>
         </div>
       );
     }
@@ -61,7 +113,7 @@ const TotalUser = () => {
     <div className="chart-container">
       <ResponsiveContainer width="100%" height={chartHeight}>
         <AreaChart
-          data={revenueData}
+          data={chartData}
           margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
         >
           <defs>
@@ -76,11 +128,12 @@ const TotalUser = () => {
              className="text-gray-600"
           />
 
-          {/* <YAxis tickLine={true} /> */}
-            <YAxis
-                      tickLine={false}
-                      className="text-gray-600"
-                    />
+          <YAxis
+            tickLine={false}
+            className="text-gray-600"
+            allowDecimals={false}
+            tickFormatter={(v) => (Number.isFinite(v) ? Math.trunc(v) : v)}
+          />
           <Tooltip content={<CustomTooltip />} />
           <Area
             type="monotone"
