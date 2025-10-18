@@ -215,7 +215,7 @@ export default function UserDetails() {
                           ? selectedUser.status
                           : String(selectedUser?.status).toLowerCase() === "blocked";
                       // If currently blocked => show Unblock, else Block
-                      return s ? "Unblock" : "Block";
+                      return s ? "isProgress" : "blocked";
                     })()}
               </button>
             </div>

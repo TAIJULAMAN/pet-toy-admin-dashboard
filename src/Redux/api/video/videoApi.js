@@ -1,25 +1,24 @@
 import { baseApi } from "../baseApi";
 
-export const userApi = baseApi.injectEndpoints({
+export const videoApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllUsers: builder.query({
+    getAllVideos: builder.query({
       query: (params) => ({
-        url: "auth/find_by_admin_all_users",
+        url: "video/find_all_video",
         method: "GET",
-        params, // e.g., { page: 1, limit: 10, search: "" }
+        params,
       }),
 
-      providesTags: ["user"],
+      providesTags: ["video"],
     }),
-    blockUser: builder.mutation({
-      query: ({ id, status }) => ({
-        url: `auth/change_status/${id}`,
-        method: "PATCH",
-        body: { status },
+    deleteVideo: builder.mutation({
+      query: (id) => ({
+        url: `video/delete_video_file/${id}`,
+        method: "DELETE",
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["video"],
     }),
   }),
 });
 
-export const { useGetAllUsersQuery, useBlockUserMutation } = userApi;
+export const { useGetAllVideosQuery, useDeleteVideoMutation } = videoApi;
