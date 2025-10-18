@@ -1,34 +1,69 @@
-import { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 
-function AboutUs() {
-  const [content, setContent] = useState(
-    "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum.There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum."
-  );
+import Swal from "sweetalert2";
+import JoditComponent from "./JoditComponent.jsx";
+import {
+  useGetAboutUsQuery,
+  useUpdateAboutUsMutation,
+} from "../../Redux/api/aboutUS/aboutUSApi.js";
+
+const AboutUs = () => {
+  const [content, setContent] = useState(" this is about us asedf");
+
+  const { data } = useGetAboutUsQuery({});
+  const [updateAboutUs, { isLoading: isSubmitting }] =
+    useUpdateAboutUsMutation();
+
+  // Load data into editor
+  useEffect(() => {
+    if (data?.data?.aboutUs) {
+      setContent(data.data.aboutUs);
+    }
+  }, [data]);
+
+  // Submit handler
+  const handleSubmit = async () => {
+    try {
+      const requestData = {
+        aboutUs: content,
+      };
+      // console.log("requestData of aboutUs", requestData);
+
+      const res = await updateAboutUs({ requestData }).unwrap();
+      if (res?.success) {
+        Swal.fire(
+          "Success",
+          res?.message || "About Us updated successfully!",
+          "success"
+        );
+      }
+    } catch (error) {
+      Swal.fire(
+        "Error",
+        error?.data?.message || "Something went wrong!",
+        "error"
+      );
+      console.error(error);
+    }
+  };
 
   return (
-    <div className="p-5">
+    <>
       <h1 className="text-start text-3xl font-bold mb-5">About Us</h1>
 
-      <div className=" bg-white rounded shadow p-5 h-full">
-        <ReactQuill
-          style={{ padding: "10px" }}
-          theme="snow"
-          value={content}
-          onChange={setContent}
-        />
-      </div>
-      <div className="text-center py-5">
+      <JoditComponent setContent={setContent} content={content} />
+      <div className="mt-5">
         <button
-          onClick={() => console.log(content)}
-          className="bg-[#FF0000] text-white font-semibold w-full py-2 rounded transition duration-200"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="bg-red-500 !text-white font-semibold w-full py-3 px-5 rounded-lg disabled:opacity-50 cursor-pointer"
         >
-          Save changes
+          {isSubmitting ? "Updating..." : "Submit"}
         </button>
       </div>
-    </div>
+    </>
   );
-}
+};
 
 export default AboutUs;
