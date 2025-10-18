@@ -1,26 +1,28 @@
 import { useState, useRef, useEffect } from "react";
 import { FaPlay, FaPause, FaTrash, FaUpload, FaMusic } from "react-icons/fa";
 import "./SoundLibrary.css";
-import { useGetAllAudiosQuery } from "../../Redux/api/audio/audioApi";
+import {
+  useGetAllAudiosQuery,
+  useDeleteAudioMutation,
+  useUploadAudioMutation,
+} from "../../Redux/api/audio/audioApi";
 import { Url } from "../../config/envConfig";
 
 function SoundLibrary() {
   const [sounds, setSounds] = useState([]);
-  const { data } = useGetAllAudiosQuery();
-  console.log("data from audio", data);
+  console.log("sounds ", sounds);
+  const { data: audiosData, refetch } = useGetAllAudiosQuery();
+  const [deleteAudio] = useDeleteAudioMutation();
+  const [uploadAudio, { isLoading: isUploading }] = useUploadAudioMutation();
+  // console.log("data from audio", data);
   useEffect(() => {
-    if (!data) return;
-    if (sounds.length > 0) return;
-    const list = Array.isArray(data?.data?.liveEvent)
-      ? data.data.liveEvent
-      : Array.isArray(data?.data?.liveEvent)
-      ? data.data.liveEvent
-      : Array.isArray(data?.data?.liveEvent)
-      ? data.data.liveEvent
+    if (!audiosData) return;
+    const list = Array.isArray(audiosData?.data?.liveEvent)
+      ? audiosData.data.liveEvent
       : [];
     const base = Url.replace(/\/+$/, "");
     const mapped = list.map((a, idx) => {
-      const id = a?._id || a?.id || `api-${idx}`;
+      const id = a?._id;
       const name = a?.title || a?.name || a?.fileName || `Audio ${idx + 1}`;
       const raw = a?.audioUrl || a?.url || a?.fileUrl || "";
       const path = String(raw || "").replace(/^\/+/, "");
@@ -28,7 +30,7 @@ function SoundLibrary() {
       return { id, name, url, isPlaying: false };
     });
     setSounds(mapped);
-  }, [data]);
+  }, [audiosData]);
 
   const audioRefs = useRef({});
 
@@ -48,21 +50,30 @@ function SoundLibrary() {
     );
   };
 
-  const handleDelete = (id) => {
-    setSounds(sounds.filter((sound) => sound.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await deleteAudio(id).unwrap();
+    } catch (e) {
+      // noop: keep UI responsive even if API fails
+    } finally {
+      setSounds((prev) => prev.filter((s) => s.id !== id));
+      try {
+        await refetch();
+      } catch {}
+    }
   };
 
-  const handleUpload = (event) => {
+  const handleUpload = async (event) => {
     const file = event.target.files[0];
-    if (file && file.type.includes("audio")) {
-      const url = URL.createObjectURL(file);
-      const newSound = {
-        id: Date.now(),
-        name: file.name.replace(/\.[^/.]+$/, ""),
-        url: url,
-        isPlaying: false,
-      };
-      setSounds([...sounds, newSound]);
+    if (!file || !file.type.includes("audio")) return;
+    try {
+      await uploadAudio(file).unwrap();
+      await refetch();
+    } catch (e) {
+      // optionally toast error
+    } finally {
+      // reset input value so same file can be selected again
+      event.target.value = "";
     }
   };
 

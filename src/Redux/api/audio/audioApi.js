@@ -18,7 +18,24 @@ export const audioApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["audio"],
     }),
+    uploadAudio: builder.mutation({
+      query: (files) => {
+        const formData = new FormData();
+        if (Array.isArray(files)) {
+          files.forEach((f) => formData.append("files", f));
+        } else if (files) {
+          formData.append("files", files);
+        }
+        return {
+          url: "audio/upload_audio_files",
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["audio"],
+    }),
+    
   }),
 });
 
-export const { useGetAllAudiosQuery, useDeleteAudioMutation } = audioApi;
+export const { useGetAllAudiosQuery, useDeleteAudioMutation, useUploadAudioMutation } = audioApi;
