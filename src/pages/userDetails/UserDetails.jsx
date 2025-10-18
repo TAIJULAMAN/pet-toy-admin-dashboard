@@ -1,198 +1,43 @@
 import { ConfigProvider, Modal, Table } from "antd";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { IoSearch } from "react-icons/io5";
 import { MdBlockFlipped } from "react-icons/md";
+import dayjs from "dayjs";
+import { useBlockUserMutation, useGetAllUsersQuery } from "../../Redux/api/user/userApi";
 
-function UserDetails() {
+export default function UserDetails() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const dataSource = [
-    {
-      key: "1",
-      no: "1",
-      name: "John Doe",
-      date: "05/03/2025",
-      phone: "+1 9876543210",
-      email: "johndoe@example.com",
-      location: "New York, USA",
-    },
-    {
-      key: "2",
-      no: "2",
-      name: "Jane Smith",
-      date: "10/04/2025",
-      phone: "+44 1234567890",
-      email: "janesmith@example.com",
-      location: "London, UK",
-    },
-    {
-      key: "3",
-      no: "3",
-      name: "Ali Khan",
-      date: "15/02/2025",
-      phone: "+92 3345678901",
-      email: "alikhan@example.com",
-      location: "Karachi, Pakistan",
-    },
-    {
-      key: "4",
-      no: "4",
-      name: "Emily Davis",
-      date: "20/05/2025",
-      phone: "+33 6789012345",
-      email: "emilydavis@example.com",
-      location: "Paris, France",
-    },
-    {
-      key: "5",
-      no: "5",
-      name: "Michael Brown",
-      date: "25/06/2025",
-      phone: "+61 4567890123",
-      email: "michaelbrown@example.com",
-      location: "Sydney, Australia",
-    },
-    {
-      key: "6",
-      no: "6",
-      name: "Linda Wilson",
-      date: "30/07/2025",
-      phone: "+49 3216549870",
-      email: "lindawilson@example.com",
-      location: "Berlin, Germany",
-    },
-    {
-      key: "7",
-      no: "7",
-      name: "David Lee",
-      date: "12/08/2025",
-      phone: "+82 7654321098",
-      email: "davidlee@example.com",
-      location: "Seoul, South Korea",
-    },
-    {
-      key: "8",
-      no: "8",
-      name: "Sophia Martinez",
-      date: "18/09/2025",
-      phone: "+34 6543219870",
-      email: "sophiamartinez@example.com",
-      location: "Madrid, Spain",
-    },
-    {
-      key: "9",
-      no: "9",
-      name: "William Johnson",
-      date: "22/10/2025",
-      phone: "+1 3120987654",
-      email: "williamjohnson@example.com",
-      location: "Chicago, USA",
-    },
-    {
-      key: "10",
-      no: "10",
-      name: "Hiroshi Tanaka",
-      date: "05/11/2025",
-      phone: "+81 9876543210",
-      email: "hiroshitanaka@example.com",
-      location: "Tokyo, Japan",
-    },
-    {
-      key: "11",
-      no: "11",
-      name: "Fatima Ahmed",
-      date: "14/12/2025",
-      phone: "+971 501234567",
-      email: "fatimaahmed@example.com",
-      location: "Dubai, UAE",
-    },
-    {
-      key: "12",
-      no: "12",
-      name: "Carlos Rodriguez",
-      date: "19/01/2025",
-      phone: "+52 9988776655",
-      email: "carlosrodriguez@example.com",
-      location: "Mexico City, Mexico",
-    },
-    {
-      key: "13",
-      no: "13",
-      name: "Elena Petrova",
-      date: "23/02/2025",
-      phone: "+7 9054321987",
-      email: "elenapetrova@example.com",
-      location: "Moscow, Russia",
-    },
-    {
-      key: "14",
-      no: "14",
-      name: "Mohammed Hassan",
-      date: "28/03/2025",
-      phone: "+20 1122334455",
-      email: "mohammedhassan@example.com",
-      location: "Cairo, Egypt",
-    },
-    {
-      key: "15",
-      no: "15",
-      name: "Olivia Thompson",
-      date: "06/04/2025",
-      phone: "+27 601234567",
-      email: "oliviathompson@example.com",
-      location: "Cape Town, South Africa",
-    },
-    {
-      key: "16",
-      no: "16",
-      name: "Lucas Kim",
-      date: "12/05/2025",
-      phone: "+82 1098765432",
-      email: "lucaskim@example.com",
-      location: "Busan, South Korea",
-    },
-    {
-      key: "17",
-      no: "17",
-      name: "Isabella Rossi",
-      date: "17/06/2025",
-      phone: "+39 5556667778",
-      email: "isabellarossi@example.com",
-      location: "Rome, Italy",
-    },
-    {
-      key: "18",
-      no: "18",
-      name: "Nathan Scott",
-      date: "24/07/2025",
-      phone: "+1 4156789012",
-      email: "nathanscott@example.com",
-      location: "San Francisco, USA",
-    },
-    {
-      key: "19",
-      no: "19",
-      name: "Emma White",
-      date: "29/08/2025",
-      phone: "+61 412345678",
-      email: "emmawhite@example.com",
-      location: "Melbourne, Australia",
-    },
-    {
-      key: "20",
-      no: "20",
-      name: "Sebastian Müller",
-      date: "10/09/2025",
-      phone: "+49 1712345678",
-      email: "sebastianmuller@example.com",
-      location: "Munich, Germany",
-    },
-  ];
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState("");
+  const { data: usersData, isLoading } = useGetAllUsersQuery();
+  const [blockUser, { isLoading: isBlocking }] = useBlockUserMutation();
+  console.log("usersData from user page", usersData);
+
+  const list = useMemo(() => {
+    const raw = usersData?.data?.all_users || [];
+    return Array.isArray(raw) ? raw : [];
+  }, [usersData]);
+
+  const total = usersData?.data?.meta?.total || 0;
+
+  const dataSource =
+    list?.map((user, index) => ({
+      key: user?._id || user?.id || index,
+      no: index + 1,
+      name: user?.name,
+      email: user?.email,
+      phone: user?.phoneNumber || "N/A",
+      location: user?.location || "N/A",
+      date: dayjs(user.createdAt).format("DD/MM/YYYY"),
+      // Backend returns strings: 'blocked' or 'isProgress'
+      status:
+        typeof user?.status === "boolean"
+          ? user.status
+          : String(user?.status).toLowerCase() === "blocked",
+      _raw: user,
+    })) || [];
 
   const columns = [
     {
@@ -221,6 +66,22 @@ function UserDetails() {
       key: "email",
     },
     {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (val) => (
+        <span
+          className={
+            val
+              ? "px-3 py-1 rounded-full text-white bg-red-500 text-xs"
+              : "px-3 py-1 rounded-full text-white bg-green-500 text-xs"
+          }
+        >
+          {val ? "blocked" : "isProgress"}
+        </span>
+      ),
+    },
+    {
       title: "Location",
       dataIndex: "location",
       key: "location",
@@ -228,8 +89,14 @@ function UserDetails() {
     {
       title: "Action",
       key: "action",
-      render: () => (
-        <button className="" onClick={showModal}>
+      render: (_, record) => (
+        <button
+          className=""
+          onClick={() => {
+            setSelectedUser(record?._raw || null);
+            setIsModalOpen(true);
+          }}
+        >
           <MdBlockFlipped className="text-[#FF0000] w-10 h-10" />
         </button>
       ),
@@ -244,6 +111,11 @@ function UserDetails() {
             type="text"
             placeholder="Search..."
             className="border border-[#e5eaf2] py-3 pl-12 pr-[65px] outline-none w-full rounded-md"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
           />
           <span className=" text-gray-500 absolute top-0 left-0 h-full px-5 flex items-center justify-center rounded-r-md cursor-pointer">
             <IoSearch className="text-[1.3rem]" />
@@ -276,13 +148,25 @@ function UserDetails() {
         <Table
           dataSource={dataSource}
           columns={columns}
-          pagination={{ pageSize: 10 }}
+          loading={isLoading}
+          pagination={{
+            current: page,
+            pageSize: limit,
+            total: total,
+            onChange: (p, ps) => {
+              setPage(p);
+              setLimit(ps);
+            },
+          }}
           scroll={{ x: "max-content" }}
         />
         <Modal
           open={isModalOpen}
           centered
-          onCancel={handleCancel}
+          onCancel={() => {
+            setIsModalOpen(false);
+            setSelectedUser(null);
+          }}
           footer={null}
         >
           <div className="flex flex-col justify-center items-center py-10">
@@ -290,14 +174,49 @@ function UserDetails() {
               Are you sure!
             </h1>
             <p className="text-xl text-center mt-5">
-              Do you want to block this user profile?
+              {(() => {
+                const s =
+                  typeof selectedUser?.status === "boolean"
+                    ? selectedUser.status
+                    : String(selectedUser?.status).toLowerCase() === "blocked";
+                // Backend: status=true (blocked), status=false (isProgress)
+                return s
+                  ? "Do you want to isProgress this user profile?"
+                  : "Do you want to block this user profile?";
+              })()}
             </p>
             <div className="text-center py-5 w-full">
               <button
-                onClick={() => setIsModalOpen(false)}
+                disabled={isBlocking}
+                onClick={async () => {
+                  if (!selectedUser) return;
+                  const id = selectedUser._id || selectedUser.id;
+                  const current =
+                    typeof selectedUser?.status === "boolean"
+                      ? selectedUser.status
+                      : String(selectedUser?.status).toLowerCase() === "blocked";
+                  try {
+                    const nextStatus = current ? "isProgress" : "blocked";
+                    await blockUser({ id, status: nextStatus }).unwrap();
+                  } catch (e) {
+                    // noop
+                  } finally {
+                    setIsModalOpen(false);
+                    setSelectedUser(null);
+                  }
+                }}
                 className="bg-[#FF0000] text-white font-semibold w-1/3 py-3 px-5 rounded-lg"
               >
-                CONFIRM
+                {isBlocking
+                  ? "Processing..."
+                  : (() => {
+                      const s =
+                        typeof selectedUser?.status === "boolean"
+                          ? selectedUser.status
+                          : String(selectedUser?.status).toLowerCase() === "blocked";
+                      // If currently blocked => show Unblock, else Block
+                      return s ? "Unblock" : "Block";
+                    })()}
               </button>
             </div>
           </div>
@@ -306,5 +225,3 @@ function UserDetails() {
     </div>
   );
 }
-
-export default UserDetails;
