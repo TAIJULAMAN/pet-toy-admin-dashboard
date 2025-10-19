@@ -1,10 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import EditProfile from "./EditProfile";
 import ChangePass from "./ChangePass";
+import Swal from "sweetalert2";
+import { useGetProfileQuery, useUpdateProfileMutation } from "../../Redux/api/profileApi";
+import { Url } from "../../config/envConfig";
 
 function ProfilePage() {
   const [activeTab, setActiveTab] = useState("editProfile");
+  const { data: profileData, refetch } = useGetProfileQuery();
+  const [updateProfile, { isLoading: isUploading }] = useUpdateProfileMutation();
+  const [preview, setPreview] = useState("");
+
+  const profile = profileData?.data || profileData || {};
+
+  const toAbsolute = (p) => {
+    const s = String(p || "").trim();
+    if (!s) return "";
+    if (/^https?:\/\//i.test(s)) return s;
+    const base = (Url || "").replace(/\/+$/, "");
+    const path = s.replace(/^\/+/, "");
+    return `${base}/${path}`;
+  };
+
+  useEffect(() => {
+    setPreview("");
+  }, [profile?.photo]);
+
+  const handlePhotoChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPreview(URL.createObjectURL(file));
+    try {
+      const form = new FormData();
+      form.append("photo", file);
+      await updateProfile(form).unwrap();
+      await refetch();
+      Swal.fire("Success", "Profile photo updated", "success");
+    } catch (err) {
+      Swal.fire("Error", err?.data?.message || "Failed to update photo", "error");
+      setPreview("");
+    } finally {
+      e.target.value = "";
+    }
+  };
 
   return (
     <div className="overflow-y-auto">
@@ -18,21 +57,27 @@ function ProfilePage() {
             <div className="relative">
               <div className="w-[122px] h-[122px] bg-gray-300 rounded-full border-4 border-white shadow-xl flex justify-center items-center">
                 <img
-                  src="https://avatar.iran.liara.run/public/44"
+                  src={preview || toAbsolute(profile?.photo) || "https://avatar.iran.liara.run/public/44"}
                   alt="profile"
-                  className="h-30 w-32 rounded-full"
+                  className="h-30 w-32 rounded-full object-cover"
                 />
                 {/* Upload Icon */}
                 <div className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md cursor-pointer">
                   <label htmlFor="profilePicUpload" className="cursor-pointer">
                     <FaCamera className="text-[#575757]" />
                   </label>
-                  <input type="file" id="profilePicUpload" className="hidden" />
+                  <input
+                    type="file"
+                    id="profilePicUpload"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="hidden"
+                  />
                 </div>
               </div>
             </div>
             <div>
-              <p className="text-xl md:text-3xl font-bold">Shah Aman</p>
+              <p className="text-xl md:text-3xl font-bold">{profile?.name || "User"}</p>
               <p className="text-xl font-semibold">Admin</p>
             </div>
           </div>
