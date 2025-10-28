@@ -3,7 +3,10 @@ import { useState, useMemo } from "react";
 import { IoSearch } from "react-icons/io5";
 import { MdBlockFlipped } from "react-icons/md";
 import dayjs from "dayjs";
-import { useBlockUserMutation, useGetAllUsersQuery } from "../../Redux/api/user/userApi";
+import {
+  useBlockUserMutation,
+  useGetAllUsersQuery,
+} from "../../Redux/api/user/userApi";
 
 export default function UserDetails() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,7 +14,16 @@ export default function UserDetails() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const { data: usersData, isLoading } = useGetAllUsersQuery();
+  const params = useMemo(() => {
+    const payload = {
+      page: String(Number(page) || 1),
+      limit: String(Number(limit) || 10),
+    };
+    return payload;
+  }, [page, limit]);
+  const { data: usersData, isLoading } = useGetAllUsersQuery(params, {
+    refetchOnMountOrArgChange: true,
+  });
   const [blockUser, { isLoading: isBlocking }] = useBlockUserMutation();
   console.log("usersData from user page", usersData);
 
@@ -22,22 +34,36 @@ export default function UserDetails() {
 
   const total = usersData?.data?.meta?.total || 0;
 
+  // Manual (client-side) search over the current page's list
+  const filteredList = useMemo(() => {
+    const q = String(search || "").toLowerCase().trim();
+    if (!q) return list;
+    const contains = (v) => String(v ?? "").toLowerCase().includes(q);
+    return list.filter((u) =>
+      contains(u?.name) ||
+      contains(u?.email) ||
+      contains(u?.phoneNumber) ||
+      contains(u?.location)
+    );
+  }, [list, search]);
+
   const dataSource =
-    list?.map((user, index) => ({
+    filteredList?.map((user, index) => ({
       key: user?._id || user?.id || index,
-      no: index + 1,
+      no: (Number(page) - 1) * Number(limit) + index + 1,
       name: user?.name,
       email: user?.email,
       phone: user?.phoneNumber || "N/A",
       location: user?.location || "N/A",
       date: dayjs(user.createdAt).format("DD/MM/YYYY"),
-      // Backend returns strings: 'blocked' or 'isProgress'
       status:
         typeof user?.status === "boolean"
           ? user.status
           : String(user?.status).toLowerCase() === "blocked",
       _raw: user,
     })) || [];
+
+  const effectiveTotal = (String(search || "").trim() ? filteredList.length : total) || 0;
 
   const columns = [
     {
@@ -149,10 +175,11 @@ export default function UserDetails() {
           dataSource={dataSource}
           columns={columns}
           loading={isLoading}
+          locale={{ emptyText: "No users found" }}
           pagination={{
             current: page,
             pageSize: limit,
-            total: total,
+            total: effectiveTotal,
             onChange: (p, ps) => {
               setPage(p);
               setLimit(ps);
@@ -194,7 +221,8 @@ export default function UserDetails() {
                   const current =
                     typeof selectedUser?.status === "boolean"
                       ? selectedUser.status
-                      : String(selectedUser?.status).toLowerCase() === "blocked";
+                      : String(selectedUser?.status).toLowerCase() ===
+                        "blocked";
                   try {
                     const nextStatus = current ? "isProgress" : "blocked";
                     await blockUser({ id, status: nextStatus }).unwrap();
@@ -213,7 +241,8 @@ export default function UserDetails() {
                       const s =
                         typeof selectedUser?.status === "boolean"
                           ? selectedUser.status
-                          : String(selectedUser?.status).toLowerCase() === "blocked";
+                          : String(selectedUser?.status).toLowerCase() ===
+                            "blocked";
                       // If currently blocked => show Unblock, else Block
                       return s ? "isProgress" : "blocked";
                     })()}

@@ -10,14 +10,12 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      // console.log("authslice");
       const payload = action.payload || {};
       const user = payload.user ?? payload.data?.user ?? null;
       const token = payload.token ?? payload.data?.accessToken ?? null;
 
       state.user = user;
       state.token = token;
-      // console.log("token", token);
     },
     logout: (state) => {
       state.user = null;

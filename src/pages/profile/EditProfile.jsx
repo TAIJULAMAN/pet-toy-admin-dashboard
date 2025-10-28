@@ -52,8 +52,8 @@ function EditProfile() {
   };
 
   return (
-    <div className="bg-white px-20 w-[715px] py-5 rounded-md">
-      <p className="text-[#0D0D0D] text-center font-bold text-2xl mb-5">
+    <div className="bg-white w-full max-w-7xl mx-auto px-5 sm:px-8 md:px-10 py-5 rounded-md">
+      <p className="text-[#0D0D0D] text-center font-bold text-xl sm:text-2xl mb-5">
         Edit Your Profile
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -80,6 +80,8 @@ function EditProfile() {
             className="w-full px-5 py-3 border-2 border-[#6A6D76] rounded-md outline-none mt-5 placeholder:text-xl"
             placeholder="Enter Email"
             required
+            disabled
+            readOnly
             value={formValues.email}
             onChange={handleChange}
           />

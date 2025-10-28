@@ -33,6 +33,7 @@ const profileApi = baseApi.injectEndpoints({
         },
         body: data,
       }),
+      invalidatesTags: ["profile"],
     }),
   }),
 });

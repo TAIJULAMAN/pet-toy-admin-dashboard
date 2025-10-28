@@ -1,9 +1,22 @@
 /* eslint-disable react/prop-types */
 
 import { useNavigate } from "react-router-dom";
+import { useGetProfileQuery } from "../../Redux/api/profileApi";
+import { Url } from "../../config/envConfig";
 
 const MainHeader = ({ toggleSidebar }) => {
   const navigate = useNavigate();
+  const { data: profileData } = useGetProfileQuery();
+  console.log("profile data", profileData);
+
+  const toAbsolute = (p) => {
+    const s = String(p || "").trim();
+    if (!s) return "";
+    if (/^https?:\/\//i.test(s)) return s;
+    const base = (Url || "").replace(/\/+$/, "");
+    const path = s.replace(/^\/+/, "");
+    return `${base}/${path}`;
+  };
 
   return (
     <div className="relative w-full">
@@ -22,12 +35,12 @@ const MainHeader = ({ toggleSidebar }) => {
               className="flex items-center gap-2 cursor-default"
             >
               <img
-                src="https://avatar.iran.liara.run/public/31"
+                src={toAbsolute(profileData?.data?.photo) || "https://avatar.iran.liara.run/public/44"}
                 className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full"
                 alt="User Avatar"
               />
               <h3 className="hidden md:block text-white text-lg font-semibold">
-                Mr. Admin
+                {profileData?.data?.name || "Admin User"}
               </h3>
             </div>
             <button

@@ -68,8 +68,8 @@ function ChangePassword() {
   };
 
   return (
-    <div className="bg-white md:px-20 px-5 md:w-[715px] pt-10 md:py-5 rounded-md">
-      <p className="text-gray-800 text-center font-bold text-2xl mb-5">
+    <div className="bg-white w-full px-5 sm:px-8 md:px-10 pt-8 md:py-5 rounded-md">
+      <p className="text-gray-800 text-center font-bold text-xl sm:text-2xl mb-5">
         Change Password
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">

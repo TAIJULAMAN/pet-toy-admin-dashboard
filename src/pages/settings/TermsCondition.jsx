@@ -5,7 +5,7 @@ import JoditComponent from "./JoditComponent.jsx";
 import {
   useGetTermsAndConditionsQuery,
   useUpdateTermsAndConditionsMutation,
-} from "../../redux/api/termsApi.js";
+} from "../../Redux/api/termsApi.js";
 
 const TermsCondition = () => {
   const [content, setContent] = useState("this is terms and conditions");
@@ -47,12 +47,12 @@ const TermsCondition = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold mb-5">Terms & Conditions</h1>
+      <h1 className="text-2xl font-bold my-5">Terms & Conditions</h1>
       <JoditComponent setContent={setContent} content={content} />
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className="bg-red-500 !text-white font-semibold w-full py-3 px-5 rounded-lg disabled:opacity-50 cursor-pointer"
+        className="bg-red-500 !text-white font-semibold w-full py-3 px-5 my-5 rounded-lg disabled:opacity-50 cursor-pointer"
       >
         {isSubmitting ? "Updating..." : "Submit"}
       </button>

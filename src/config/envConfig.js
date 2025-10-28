@@ -1,7 +1,9 @@
 export const Url =
-  "https://photographic-homeland-scripting-designing.trycloudflare.com/";
+  "https://config-accept-flavor-screw.trycloudflare.com/";
 
 export const url = `${Url}api/v1/`;
+export const imgUrl = `${Url}api/v1`;
+
 
 // //  WebSocket base URL (auto picks wss:// if https page, ws:// otherwise)
 // const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";

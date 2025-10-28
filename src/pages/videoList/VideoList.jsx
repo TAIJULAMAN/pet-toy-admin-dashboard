@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { FiTrash2 } from "react-icons/fi";
 import { IoSearch } from "react-icons/io5";
-import { useState } from "react";
-import { Modal } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import { Modal, Pagination } from "antd";
 import {
   useGetAllVideosQuery,
   useDeleteVideoMutation,
@@ -11,18 +11,33 @@ import { Url } from "../../config/envConfig";
 
 export default function VideoList() {
   const [search, setSearch] = useState("");
-  const { data, isLoading } = useGetAllVideosQuery();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data, isLoading } = useGetAllVideosQuery({
+    page: String(Number(page) || 1),
+    limit: String(Number(limit) || 10),
+  });
   console.log("data video list", data);
 
-  const list = Array.isArray(data?.data?.allVideos) ? data.data.allVideos : [];
-  const filtered = list.filter((v) => {
-    if (!search) return true;
-    const s = search.toLowerCase();
-    return (
-      String(v?.title || "").toLowerCase().includes(s) ||
-      String(v?.userId?.name || "").toLowerCase().includes(s)
-    );
-  });
+  const list = useMemo(
+    () => (Array.isArray(data?.data?.allVideos) ? data.data.allVideos : []),
+    [data]
+  );
+
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedSearch(search.trim().toLowerCase()), 300);
+    return () => clearTimeout(id);
+  }, [search]);
+
+  const filtered = useMemo(() => {
+    const s = debouncedSearch;
+    if (!s) return list;
+    const contains = (v) => String(v || "").toLowerCase().includes(s);
+    return list.filter((v) => contains(v?.title) || contains(v?.userId?.name));
+  }, [list, debouncedSearch]);
+
+  const total = data?.data?.meta?.total || 0;
 
   return (
     <div className="mb-5">
@@ -43,16 +58,35 @@ export default function VideoList() {
       {isLoading ? (
         <div className="text-center py-10">Loading videos...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
-          {filtered.map((video) => (
-            <PetVideoCard key={video?._id} content={video} />
-          ))}
-          {filtered.length === 0 && (
-            <div className="col-span-full text-center text-gray-500">
-              No videos found
-            </div>
-          )}
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+            {filtered.map((video) => (
+              <PetVideoCard key={video?._id} content={video} />
+            ))}
+            {filtered.length === 0 && (
+              <div className="col-span-full text-center text-gray-500">
+                No videos found
+              </div>
+            )}
+          </div>
+          <div className="flex justify-center items-center mt-4">
+            <Pagination
+              current={page}
+              pageSize={limit}
+              total={total}
+              showSizeChanger={false}
+              onChange={(p, ps) => {
+                if (ps !== limit) {
+                  setLimit(ps);
+                  setPage(1);
+                } else {
+                  setPage(p);
+                }
+              }}
+              disabled={isLoading}
+            />
+          </div>
+        </>
       )}
     </div>
   );
@@ -85,7 +119,9 @@ function PetVideoCard({ content }) {
         <div className="flex items-center space-x-3">
           <div className="h-9 w-9 border border-gray-200 rounded-full overflow-hidden">
             <img
-              src={`${Url.replace(/\/+$/, "")}/${String(content?.userId?.photo || "").replace(/^\/+/, "")}`}
+              src={content?.userId?.photo
+                ? `${Url.replace(/\/+$/, "")}/${String(content?.userId?.photo).replace(/^\/+/, "")}`
+                : "https://avatar.iran.liara.run/public/8"}
               alt={content?.userId?.name}
               width={36}
               height={36}

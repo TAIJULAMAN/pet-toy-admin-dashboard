@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { Pagination } from "antd";
 import { FaPlay, FaPause, FaTrash, FaUpload, FaMusic } from "react-icons/fa";
 import "./SoundLibrary.css";
 import {
@@ -8,10 +9,15 @@ import {
 } from "../../Redux/api/audio/audioApi";
 import { Url } from "../../config/envConfig";
 
-function SoundLibrary() {
+export default function SoundLibrary() {
   const [sounds, setSounds] = useState([]);
   console.log("sounds ", sounds);
-  const { data: audiosData, refetch } = useGetAllAudiosQuery();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data: audiosData, refetch } = useGetAllAudiosQuery({
+    page: String(Number(page) || 1),
+    limit: String(Number(limit) || 10),
+  });
   const [deleteAudio] = useDeleteAudioMutation();
   const [uploadAudio, { isLoading: isUploading }] = useUploadAudioMutation();
   // console.log("data from audio", data);
@@ -33,6 +39,27 @@ function SoundLibrary() {
   }, [audiosData]);
 
   const audioRefs = useRef({});
+
+  // Manual search state and debounced value
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  useEffect(() => {
+    const id = setTimeout(
+      () => setDebouncedSearch(search.trim().toLowerCase()),
+      300
+    );
+    return () => clearTimeout(id);
+  }, [search]);
+
+  // Filter sounds on client side by name
+  const filteredSounds = useMemo(() => {
+    const q = debouncedSearch;
+    if (!q) return sounds;
+    const contains = (v) => String(v || "").toLowerCase().includes(q);
+    return sounds.filter((s) => contains(s.name));
+  }, [sounds, debouncedSearch]);
+
+  const total = audiosData?.data?.meta?.total || 0;
 
   const handlePlay = (id) => {
     setSounds(
@@ -84,6 +111,16 @@ function SoundLibrary() {
           <FaMusic className="music-icon" />
           <h1 className="text-2xl font-bold">Add Sound Library</h1>
         </div>
+        {/* Search box */}
+        <div className="w-full max-w-xs">
+          <input
+            type="text"
+            placeholder="Search sounds..."
+            className="w-full border border-[#e5eaf2] rounded-md px-3 py-2 outline-none"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <label className="upload-btn">
           <input
             type="file"
@@ -97,7 +134,7 @@ function SoundLibrary() {
       </div>
 
       <div className="sound-list">
-        {sounds.map((sound) => (
+        {filteredSounds.map((sound, index) => (
           <div key={sound.id} className="sound-item">
             <audio
               ref={(el) => (audioRefs.current[sound.id] = el)}
@@ -106,7 +143,13 @@ function SoundLibrary() {
             />
             <div className="sound-info">
               <FaMusic className="sound-icon" />
-              <span className="sound-name">{sound.name}</span>
+              <span className="sound-name">{
+                (() => {
+                  const globalIndex = (Number(page) - 1) * Number(limit) + index + 1;
+                  const isDefault = /^\s*Audio\s+\d+\s*$/i.test(String(sound.name || ""));
+                  return isDefault ? `Audio ${globalIndex}` : sound.name;
+                })()
+              }</span>
             </div>
             <div className="sound-controls">
               <button
@@ -134,9 +177,29 @@ function SoundLibrary() {
             <p>No sounds available. Upload some sounds to get started!</p>
           </div>
         )}
+        {sounds.length > 0 && filteredSounds.length === 0 && (
+          <div className="empty-state">
+            <FaMusic className="empty-icon" />
+            <p>No matching sounds found.</p>
+          </div>
+        )}
+        <div className="flex justify-center items-center mt-4">
+          <Pagination
+            current={page}
+            pageSize={limit}
+            total={total}
+            showSizeChanger={false}
+            onChange={(p, ps) => {
+              if (ps !== limit) {
+                setLimit(ps);
+                setPage(1);
+              } else {
+                setPage(p);
+              }
+            }}
+          />
+        </div>
       </div>
     </div>
   );
 }
-
-export default SoundLibrary;
