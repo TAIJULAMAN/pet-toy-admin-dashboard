@@ -20,48 +20,42 @@ const MainHeader = ({ toggleSidebar }) => {
 
   return (
     <div className="relative w-full">
-      <header className="bg-[#FF0000] shadow-sm">
+      <header className="bg-gradient-to-br from-slate-50 via-white to-red-50 text-[#0D0D0D] shadow-sm">
         <div className="flex justify-between items-center px-5 md:px-10 h-[80px]">
-          <div onClick={() => navigate("/")}>
+          {/* Mobile Menu Button - Left Side */}
+          <button
+            onClick={toggleSidebar}
+            className="p-2 rounded focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+
+          {/* Profile Section - Right Side */}
+          <div
+            onClick={() => navigate("/profile")}
+            className="flex justify-end items-center gap-2 cursor-pointer"
+          >
             <img
-              src="/header.png"
-              className="w-[72px] h-[50px]"
+              src={toAbsolute(profileData?.data?.photo)}
+              className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full"
               alt="User Avatar"
             />
-          </div>
-          <div className="flex">
-            <div
-              onClick={() => navigate("/profile")}
-              className="flex items-center gap-2 cursor-default"
-            >
-              <img
-                src={toAbsolute(profileData?.data?.photo) || "https://avatar.iran.liara.run/public/44"}
-                className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full"
-                alt="User Avatar"
-              />
-              <h3 className="hidden md:block text-white text-lg font-semibold">
-                {profileData?.data?.name || "Admin User"}
-              </h3>
-            </div>
-            <button
-              onClick={toggleSidebar}
-              className="md:hidden p-2 rounded focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
+            <h3 className="hidden md:block text-[#0D0D0D] text-lg font-semibold">
+              {profileData?.data?.name}
+            </h3>
           </div>
         </div>
       </header>

@@ -9,11 +9,11 @@ const MainLayout = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="flex flex-col z-50">
-      <MainHeader toggleSidebar={toggleSidebar} />
-      <div className="flex w-full">
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <main className="p-5 bg-white h-[100vh] w-full md:w-[85%] lg:w-[85%]">
+    <div className="flex min-h-screen bg-white">
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <div className="flex flex-col flex-1 w-full lg:w-[85%]">
+        <MainHeader toggleSidebar={toggleSidebar} />
+        <main className="flex-1 p-5 bg-[#F5F5F5]">
           <Outlet />
         </main>
       </div>
