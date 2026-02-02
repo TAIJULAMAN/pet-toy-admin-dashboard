@@ -11,29 +11,26 @@ import { Url } from "../../config/envConfig";
 
 export default function SoundLibrary() {
   const [sounds, setSounds] = useState([]);
-  console.log("sounds ", sounds);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const { data: audiosData, refetch } = useGetAllAudiosQuery({
     page: String(Number(page) || 1),
     limit: String(Number(limit) || 10),
   });
-  console.log("audiosData", audiosData);
   const [deleteAudio] = useDeleteAudioMutation();
   const [uploadAudio, { isLoading: isUploading }] = useUploadAudioMutation();
-  // console.log("data from audio", data);
   useEffect(() => {
     if (!audiosData) return;
-    const list = Array.isArray(audiosData?.data?.liveEvent)
-      ? audiosData.data.liveEvent
-      : [];
+    const list = audiosData?.data?.liveEvent || audiosData?.data?.allAudio || audiosData?.data?.audios || [];
+    const validList = Array.isArray(list) ? list : [];
+
     const base = Url.replace(/\/+$/, "");
-    const mapped = list.map((a, idx) => {
-      const id = a?._id;
+    const mapped = validList.map((a, idx) => {
+      const id = a?._id || idx;
       const name = a?.title || a?.name || a?.fileName || `Audio ${idx + 1}`;
       const raw = a?.audioUrl || a?.url || a?.fileUrl || "";
       const path = String(raw || "").replace(/^\/+/, "");
-      const url = `${base}/${path}`;
+      const url = raw.startsWith("http") ? raw : `${base}/${path}`;
       return { id, name, url, isPlaying: false };
     });
     setSounds(mapped);
@@ -41,7 +38,6 @@ export default function SoundLibrary() {
 
   const audioRefs = useRef({});
 
-  // Manual search state and debounced value
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   useEffect(() => {
@@ -66,13 +62,20 @@ export default function SoundLibrary() {
       sounds.map((sound) => {
         if (sound.id === id) {
           if (!sound.isPlaying) {
-            audioRefs.current[id].play();
+            Object.values(audioRefs.current).forEach((audio) => {
+              if (audio && audio !== audioRefs.current[id]) {
+                audio.pause();
+                audio.currentTime = 0;
+              }
+            });
+            audioRefs.current[id]?.play();
           } else {
-            audioRefs.current[id].pause();
+            audioRefs.current[id]?.pause();
           }
           return { ...sound, isPlaying: !sound.isPlaying };
+        } else {
+          return { ...sound, isPlaying: false };
         }
-        return sound;
       })
     );
   };
@@ -108,7 +111,6 @@ export default function SoundLibrary() {
           <FaMusic className="music-icon" />
           <h1 className="text-2xl font-bold">Add Sound Library</h1>
         </div>
-        {/* Search box */}
         <div className="w-full max-w-xs">
           <input
             type="text"
