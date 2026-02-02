@@ -21,11 +21,10 @@ const MainHeader = ({ toggleSidebar }) => {
   return (
     <div className="relative w-full">
       <header className="bg-gradient-to-br from-slate-50 via-white to-red-50 text-[#0D0D0D] shadow-sm">
-        <div className="flex justify-between items-center px-5 md:px-10 h-[80px]">
-          {/* Mobile Menu Button - Left Side */}
+        <div className="flex justify-between md:justify-end items-center px-5 md:px-10 h-[80px]">
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded focus:outline-none"
+            className="block lg:hidden p-2 rounded focus:outline-none"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -42,18 +41,16 @@ const MainHeader = ({ toggleSidebar }) => {
               />
             </svg>
           </button>
-
-          {/* Profile Section - Right Side */}
           <div
             onClick={() => navigate("/profile")}
-            className="flex justify-end items-center gap-2 cursor-pointer"
+            className="flex items-center gap-2 cursor-pointer"
           >
             <img
               src={toAbsolute(profileData?.data?.photo)}
               className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full"
               alt="User Avatar"
             />
-            <h3 className="hidden md:block text-[#0D0D0D] text-lg font-semibold">
+            <h3 className="text-[#0D0D0D] text-lg font-semibold">
               {profileData?.data?.name}
             </h3>
           </div>

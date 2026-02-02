@@ -104,9 +104,7 @@ function PetVideoCard({ content }) {
 
   return (
     <div className="relative rounded-lg overflow-hidden shadow-md bg-[#F2F2F2] h-full">
-      {/* Dynamically setting the video URL */}
       <div className="relative pb-[56.25%] w-full">
-        {/* Aspect ratio container */}
         <video
           className="absolute top-0 left-0 w-full h-full"
           src={`${Url.replace(/\/+$/, "")}/${String(content?.videoUrl || "").replace(/^\/+/, "")}`}
@@ -119,9 +117,7 @@ function PetVideoCard({ content }) {
         <div className="flex items-center space-x-3">
           <div className="h-9 w-9 border border-gray-200 rounded-full overflow-hidden">
             <img
-              src={content?.userId?.photo
-                ? `${Url.replace(/\/+$/, "")}/${String(content?.userId?.photo).replace(/^\/+/, "")}`
-                : "https://avatar.iran.liara.run/public/8"}
+              src={content?.userId?.photo || "https://avatar.iran.liara.run/public/8"}
               alt={content?.userId?.name}
               width={36}
               height={36}

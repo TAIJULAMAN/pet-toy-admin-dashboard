@@ -6,11 +6,12 @@ import {
   useGetTermsAndConditionsQuery,
   useUpdateTermsAndConditionsMutation,
 } from "../../Redux/api/termsApi.js";
+import Loader from "../../components/loader/Loader.jsx";
 
 const TermsCondition = () => {
-  const [content, setContent] = useState("this is terms and conditions");
+  const [content, setContent] = useState("");
 
-  const { data } = useGetTermsAndConditionsQuery("setting/terms_conditions");
+  const { data, isLoading: isLoadingTerms } = useGetTermsAndConditionsQuery("setting/terms_conditions");
   const [updateTermsAndConditions, { isLoading: isSubmitting }] =
     useUpdateTermsAndConditionsMutation();
 
@@ -23,7 +24,7 @@ const TermsCondition = () => {
   const handleSubmit = async () => {
     try {
       const requestData = {
-        TermsConditions: content, // ✅ backend expects this key
+        TermsConditions: content,
       };
       console.log("requestData of terms", requestData);
 
@@ -44,6 +45,10 @@ const TermsCondition = () => {
       console.error(error);
     }
   };
+
+  if (isLoadingTerms || isSubmitting) {
+    return <Loader />;
+  }
 
   return (
     <>

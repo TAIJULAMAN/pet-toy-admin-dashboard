@@ -4,11 +4,12 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../Redux/api/profileApi";
+import Loader from "../../components/loader/Loader";
 
 function EditProfile() {
-  const { data: profileData } = useGetProfileQuery();
-  console.log("profile data", profileData);
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
+  console.log("profile data", profileData)
+  const [updateProfile, { isLoading: isUpdatingProfile }] = useUpdateProfileMutation();
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
@@ -36,10 +37,13 @@ function EditProfile() {
     e.preventDefault();
     try {
       const form = new FormData();
-      form.append("name", formValues.name);
-      form.append("email", formValues.email);
-      form.append("phoneNumber", formValues.phoneNumber);
-      form.append("location", formValues.location);
+      const profileData = {
+        name: formValues.name,
+        email: formValues.email,
+        phoneNumber: formValues.phoneNumber,
+        location: formValues.location,
+      };
+      form.append("data", JSON.stringify(profileData));
       await updateProfile(form).unwrap();
       Swal.fire("Success", "Profile updated successfully", "success");
     } catch (error) {
@@ -50,6 +54,10 @@ function EditProfile() {
       );
     }
   };
+
+  if (isLoadingProfile || isUpdatingProfile) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-white w-full max-w-7xl mx-auto px-5 sm:px-8 md:px-10 py-5 rounded-md">
@@ -118,10 +126,10 @@ function EditProfile() {
 
         <div className="text-center py-5">
           <button
-            disabled={isLoading}
+            disabled={isUpdatingProfile}
             className="bg-[#FF0000] text-white font-semibold w-full py-3 rounded-lg disabled:opacity-60"
           >
-            {isLoading ? "Updating..." : "Save & Change"}
+            {isUpdatingProfile ? "Updating..." : "Save & Change"}
           </button>
         </div>
       </form>

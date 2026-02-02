@@ -7,29 +7,30 @@ import {
   useGetAboutUsQuery,
   useUpdateAboutUsMutation,
 } from "../../Redux/api/aboutUS/aboutUSApi.js";
+import Loader from "../../components/loader/Loader.jsx";
 
 const AboutUs = () => {
-  const [content, setContent] = useState(" this is about us asedf");
+  const [content, setContent] = useState("");
 
-  const { data } = useGetAboutUsQuery({});
+  const { data, isLoading: isLoadingAboutUs } = useGetAboutUsQuery({});
   const [updateAboutUs, { isLoading: isSubmitting }] =
     useUpdateAboutUsMutation();
 
-  // Load data into editor
   useEffect(() => {
     if (data?.data?.aboutUs) {
       setContent(data.data.aboutUs);
     }
   }, [data]);
 
-  // Submit handler
+  if (isLoadingAboutUs || isSubmitting) {
+    return <Loader />;
+  }
+
   const handleSubmit = async () => {
     try {
       const requestData = {
         aboutUs: content,
       };
-      // console.log("requestData of aboutUs", requestData);
-
       const res = await updateAboutUs({ requestData }).unwrap();
       if (res?.success) {
         Swal.fire(

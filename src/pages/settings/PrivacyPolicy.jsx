@@ -5,11 +5,12 @@ import {
   useUpdatePrivacyMutation,
 } from "../../Redux/api/privacyApi";
 import JoditComponent from "./JoditComponent.jsx";
+import Loader from "../../components/loader/Loader.jsx";
 
 const PrivacyPolicy = () => {
-  const [content, setContent] = useState("this is privacy policy");
+  const [content, setContent] = useState("");
 
-  const { data } = useGetPrivacyQuery();
+  const { data, isLoading: isLoadingPrivacy } = useGetPrivacyQuery();
   const [updatePrivacy, { isLoading: isSubmitting }] =
     useUpdatePrivacyMutation();
 
@@ -20,12 +21,11 @@ const PrivacyPolicy = () => {
     }
 
     const requestData = {
-      PrivacyPolicy: content, // ✅ backend expects this key
+      PrivacyPolicy: content,
     };
 
     try {
       const res = await updatePrivacy({ requestData }).unwrap();
-      console.log("Response from updatePrivacy:", res);
 
       if (res?.success) {
         Swal.fire("Success", res?.message || "Privacy policy updated successfully!", "success");
@@ -41,6 +41,10 @@ const PrivacyPolicy = () => {
       setContent(data.data.PrivacyPolicy);
     }
   }, [data]);
+
+  if (isLoadingPrivacy || isSubmitting) {
+    return <Loader />;
+  }
 
   return (
     <>

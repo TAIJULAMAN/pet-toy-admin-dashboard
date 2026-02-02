@@ -5,15 +5,15 @@ import ChangePass from "./ChangePass";
 import Swal from "sweetalert2";
 import { useGetProfileQuery, useUpdateProfileMutation } from "../../Redux/api/profileApi";
 import { Url } from "../../config/envConfig";
+import Loader from "../../components/loader/Loader";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("editProfile");
-  const { data: profileData } = useGetProfileQuery();
+  const { data: profileData, isLoading: isLoadingProfile } = useGetProfileQuery();
   const [updateProfile, { isLoading: isUploading }] = useUpdateProfileMutation();
   const [preview, setPreview] = useState("");
 
-  const profile = profileData?.data || profileData || {};
-  
+  const profile = profileData?.data || {};
 
   const toAbsolute = (p) => {
     const s = String(p || "").trim();
@@ -27,16 +27,15 @@ export default function ProfilePage() {
   useEffect(() => {
     setPreview("");
   }, [profile?.photo]);
-
   const handlePhotoChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setPreview(URL.createObjectURL(file));
     try {
       const form = new FormData();
-      form.append("photo", file);
+      form.append("file", file);
+      form.append("data", JSON.stringify({}));
       await updateProfile(form).unwrap();
-      await refetch();
       Swal.fire("Success", "Profile photo updated", "success");
     } catch (err) {
       Swal.fire("Error", err?.data?.message || "Failed to update photo", "error");
@@ -45,27 +44,37 @@ export default function ProfilePage() {
       e.target.value = "";
     }
   };
+  if (isLoadingProfile || isUploading) {
+    return <Loader />;
+  }
 
   return (
-    <div className="overflow-y-auto">
-      <div className="px-5 pb-5 h-full">
-        <h3 className="font-semibold pb-5 text-xl text-[#242424]">
-          Admin Profile(Super Admin)
-        </h3>
-        <div className="mx-auto flex flex-col justify-center items-center">
-          {/* Profile Picture Section */}
-          <div className="flex flex-col md:flex-row justify-center items-center bg-[#FF0000] mt-5 text-white w-full max-w-4xl mx-auto p-4 md:p-5 gap-4 md:gap-5 rounded-lg">
-            <div className="relative">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gray-300 rounded-full border-4 border-white shadow-xl flex justify-center items-center">
-                <img
-                  src={preview || toAbsolute(profile?.photo) || "https://avatar.iran.liara.run/public/44"}
-                  alt="profile"
-                  className="w-full h-full rounded-full object-cover"
-                />
-                {/* Upload Icon */}
-                <div className="absolute bottom-1 right-1 md:bottom-2 md:right-2 bg-white p-2 rounded-full shadow-md cursor-pointer">
-                  <label htmlFor="profilePicUpload" className="cursor-pointer">
-                    <FaCamera className="text-[#575757]" />
+    <div className="h-full overflow-y-auto bg-gray-50/50">
+      <div className="px-5 pb-10 h-full">
+        <div className="max-w-6xl mx-auto pt-6">
+          <h3 className="font-bold text-2xl text-gray-800 mb-6 px-2">
+            Admin Profile
+          </h3>
+
+          <div className="flex flex-col items-center">
+            <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-r from-[#FF0000] to-[#D90000] shadow-xl text-white p-8 md:p-10 transition-all hover:shadow-2xl">
+              <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-black/5 rounded-full blur-2xl pointer-events-none"></div>
+              <div className="relative flex flex-col md:flex-row items-center gap-8 z-10">
+                <div className="relative group">
+                  <div className="w-32 h-32 md:w-36 md:h-36 rounded-full border-[6px] border-white/90 shadow-2xl overflow-hidden bg-white">
+                    <img
+                      src={profile?.photo}
+                      alt="profile"
+                      className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  <label
+                    htmlFor="profilePicUpload"
+                    className="absolute bottom-1 right-1 bg-white text-[#FF0000] p-3 rounded-full shadow-lg cursor-pointer hover:bg-gray-50 transition-colors transform hover:scale-105 border border-gray-100"
+                    title="Change Profile Photo"
+                  >
+                    <FaCamera className="text-lg" />
                   </label>
                   <input
                     type="file"
@@ -75,43 +84,47 @@ export default function ProfilePage() {
                     className="hidden"
                   />
                 </div>
+
+                {/* Profile Info */}
+                <div className="text-center md:text-left space-y-2">
+                  <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-md">
+                    {profile?.name || "N/A"}
+                  </h2>
+                  <div className="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full border border-white/10">
+                    <p className="text-sm md:text-base font-medium tracking-wide uppercase">Admin</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="text-center md:text-left">
-              <p className="text-xl md:text-3xl font-bold">{profile?.name || "User"}</p>
-              <p className="text-xl font-semibold">Admin</p>
+
+            {/* Tab Navigation Section */}
+            <div className="flex justify-center items-center gap-3 my-8 bg-white p-1.5 rounded-full shadow-sm border border-gray-100 w-fit mx-auto sticky top-4 z-20">
+              <button
+                onClick={() => setActiveTab("editProfile")}
+                className={`px-8 py-2.5 rounded-full text-sm md:text-base font-semibold transition-all duration-300 ${activeTab === "editProfile"
+                  ? "bg-[#FF0000] text-white shadow-md transform scale-105"
+                  : "text-gray-500 hover:text-[#FF0000] hover:bg-red-50"
+                  }`}
+              >
+                Edit Profile
+              </button>
+              <button
+                onClick={() => setActiveTab("changePassword")}
+                className={`px-8 py-2.5 rounded-full text-sm md:text-base font-semibold transition-all duration-300 ${activeTab === "changePassword"
+                  ? "bg-[#FF0000] text-white shadow-md transform scale-105"
+                  : "text-gray-500 hover:text-[#FF0000] hover:bg-red-50"
+                  }`}
+              >
+                Change Password
+              </button>
             </div>
-          </div>
 
-          {/* Tab Navigation Section */}
-          <div className="flex justify-center items-center gap-5 text-md md:text-xl font-semibold my-5">
-            <p
-              onClick={() => setActiveTab("editProfile")}
-              className={`cursor-pointer pb-1 ${
-                activeTab === "editProfile"
-                  ? "text-[#FF0000] border-b-2 border-[#FF0000]"
-                  : "text-[#6A6D76]"
-              }`}
-            >
-              Edit Profile
-            </p>
-            <p
-              onClick={() => setActiveTab("changePassword")}
-              className={`cursor-pointer pb-1 ${
-                activeTab === "changePassword"
-                  ? "text-[#FF0000] border-b-2 border-[#FF0000]"
-                  : "text-[#6A6D76]"
-              }`}
-            >
-              Change Password
-            </p>
-          </div>
-
-          {/* Tab Content Section */}
-          <div className="flex justify-center items-center p-5 rounded-md">
-            <div className="w-full max-w-7xl mx-auto">
-              {activeTab === "editProfile" && <EditProfile />}
-              {activeTab === "changePassword" && <ChangePass />}
+            {/* Tab Content Section */}
+            <div className="w-full max-w-5xl mx-auto bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 min-h-[400px]">
+              <div className="animate-fade-in-up">
+                {activeTab === "editProfile" && <EditProfile />}
+                {activeTab === "changePassword" && <ChangePass />}
+              </div>
             </div>
           </div>
         </div>

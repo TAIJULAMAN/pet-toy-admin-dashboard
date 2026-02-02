@@ -3,9 +3,9 @@ import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import {
   useChangeAdminPasswordMutation,
-  // useGetAdminProfileQuery
 } from "../../Redux/api/profileApi";
 import Swal from "sweetalert2";
+import Loader from "../../components/loader/Loader";
 
 function ChangePassword() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,8 +14,6 @@ function ChangePassword() {
     password: "",
     confirm_password: "",
   });
-  // const { data: AdminProfileData } = useGetAdminProfileQuery()
-  // console.log("admin profile data", AdminProfileData)
   const [changeAdminPassword, { isLoading }] = useChangeAdminPasswordMutation();
 
   const handleChange = (e) => {
@@ -27,10 +25,7 @@ function ChangePassword() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const { old_password, password, confirm_password } = formValues;
-
-    // Password validation
     if (password !== confirm_password) {
       Swal.fire({
         icon: "error",
@@ -66,6 +61,10 @@ function ChangePassword() {
         });
       });
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-white w-full px-5 sm:px-8 md:px-10 pt-8 md:py-5 rounded-md">
