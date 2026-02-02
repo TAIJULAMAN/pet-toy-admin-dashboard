@@ -82,11 +82,6 @@ export default function UserDetails() {
       key: "date",
     },
     {
-      title: "Phone Number",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
       title: "Email",
       dataIndex: "email",
       key: "email",
@@ -222,7 +217,7 @@ export default function UserDetails() {
                     typeof selectedUser?.status === "boolean"
                       ? selectedUser.status
                       : String(selectedUser?.status).toLowerCase() ===
-                        "blocked";
+                      "blocked";
                   try {
                     const nextStatus = current ? "isProgress" : "blocked";
                     await blockUser({ id, status: nextStatus }).unwrap();
@@ -238,14 +233,14 @@ export default function UserDetails() {
                 {isBlocking
                   ? "Processing..."
                   : (() => {
-                      const s =
-                        typeof selectedUser?.status === "boolean"
-                          ? selectedUser.status
-                          : String(selectedUser?.status).toLowerCase() ===
-                            "blocked";
-                      // If currently blocked => show Unblock, else Block
-                      return s ? "isProgress" : "blocked";
-                    })()}
+                    const s =
+                      typeof selectedUser?.status === "boolean"
+                        ? selectedUser.status
+                        : String(selectedUser?.status).toLowerCase() ===
+                        "blocked";
+                    // If currently blocked => show Unblock, else Block
+                    return s ? "isProgress" : "blocked";
+                  })()}
               </button>
             </div>
           </div>

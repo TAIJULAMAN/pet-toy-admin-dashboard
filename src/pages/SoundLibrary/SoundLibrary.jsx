@@ -106,30 +106,32 @@ export default function SoundLibrary() {
 
   return (
     <div className="sound-library">
-      <div className="sound-library-header">
+      <div className="sound-library-header flex flex-col md:flex-row items-center justify-between gap-2 space-y-5">
         <div className="header-title">
           <FaMusic className="music-icon" />
           <h1 className="text-2xl font-bold">Add Sound Library</h1>
         </div>
-        <div className="w-full max-w-xs">
-          <input
-            type="text"
-            placeholder="Search sounds..."
-            className="w-full border border-[#e5eaf2] rounded-md px-3 py-2 outline-none"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div className="flex flex-col md:flex-row items-center gap-2">
+          <div className="w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Search sounds..."
+              className="w-full border border-[#e5eaf2] rounded-md px-3 py-2 outline-none"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <label className="upload-btn w-full max-w-md">
+            <input
+              type="file"
+              accept="audio/*"
+              onChange={handleUpload}
+              style={{ display: "none" }}
+            />
+            <FaUpload className="upload-icon" />
+            <span>Upload Sound</span>
+          </label>
         </div>
-        <label className="upload-btn">
-          <input
-            type="file"
-            accept="audio/*"
-            onChange={handleUpload}
-            style={{ display: "none" }}
-          />
-          <FaUpload className="upload-icon" />
-          <span>Upload Sound</span>
-        </label>
       </div>
 
       <div className="sound-list">

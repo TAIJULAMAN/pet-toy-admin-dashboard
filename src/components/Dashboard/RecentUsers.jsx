@@ -45,11 +45,6 @@ export default function RecentUsers() {
       key: "date",
     },
     {
-      title: "Phone Number",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
       title: "Email",
       dataIndex: "email",
       key: "email",
