@@ -117,7 +117,7 @@ function PetVideoCard({ content }) {
         <div className="flex items-center space-x-3">
           <div className="h-9 w-9 border border-gray-200 rounded-full overflow-hidden">
             <img
-              src={content?.userId?.photo || "https://avatar.iran.liara.run/public/8"}
+              src={content?.userId?.photo || "/avatar.png"}
               alt={content?.userId?.name}
               width={36}
               height={36}

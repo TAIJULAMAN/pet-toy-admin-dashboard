@@ -18,6 +18,7 @@ export default function SoundLibrary() {
     page: String(Number(page) || 1),
     limit: String(Number(limit) || 10),
   });
+  console.log("audiosData", audiosData);
   const [deleteAudio] = useDeleteAudioMutation();
   const [uploadAudio, { isLoading: isUploading }] = useUploadAudioMutation();
   // console.log("data from audio", data);
@@ -51,7 +52,6 @@ export default function SoundLibrary() {
     return () => clearTimeout(id);
   }, [search]);
 
-  // Filter sounds on client side by name
   const filteredSounds = useMemo(() => {
     const q = debouncedSearch;
     if (!q) return sounds;
@@ -81,12 +81,11 @@ export default function SoundLibrary() {
     try {
       await deleteAudio(id).unwrap();
     } catch (e) {
-      // noop: keep UI responsive even if API fails
     } finally {
       setSounds((prev) => prev.filter((s) => s.id !== id));
       try {
         await refetch();
-      } catch {}
+      } catch { }
     }
   };
 
@@ -97,9 +96,7 @@ export default function SoundLibrary() {
       await uploadAudio(file).unwrap();
       await refetch();
     } catch (e) {
-      // optionally toast error
     } finally {
-      // reset input value so same file can be selected again
       event.target.value = "";
     }
   };
@@ -153,9 +150,8 @@ export default function SoundLibrary() {
             </div>
             <div className="sound-controls">
               <button
-                className={`control-btn play ${
-                  sound.isPlaying ? "playing" : ""
-                }`}
+                className={`control-btn play ${sound.isPlaying ? "playing" : ""
+                  }`}
                 onClick={() => handlePlay(sound.id)}
                 title={sound.isPlaying ? "Pause" : "Play"}
               >
