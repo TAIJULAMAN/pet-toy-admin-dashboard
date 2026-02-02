@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { FiTrash2 } from "react-icons/fi";
 import { IoSearch } from "react-icons/io5";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Modal, Pagination } from "antd";
 import {
   useGetAllVideosQuery,
@@ -17,10 +17,11 @@ export default function VideoList() {
     page: String(Number(page) || 1),
     limit: String(Number(limit) || 10),
   });
-  console.log("data video list", data);
-
   const list = useMemo(
-    () => (Array.isArray(data?.data?.allVideos) ? data.data.allVideos : []),
+    () => {
+      const rawList = data?.data?.allVideos || [];
+      return Array.isArray(rawList) ? rawList : [];
+    },
     [data]
   );
 
@@ -38,6 +39,16 @@ export default function VideoList() {
   }, [list, debouncedSearch]);
 
   const total = data?.data?.meta?.total || 0;
+
+  const videoRefs = useRef({});
+
+  const handlePlay = (id) => {
+    Object.keys(videoRefs.current).forEach((key) => {
+      if (key !== id && videoRefs.current[key]) {
+        videoRefs.current[key].pause();
+      }
+    });
+  };
 
   return (
     <div className="mb-5">
@@ -61,7 +72,12 @@ export default function VideoList() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
             {filtered.map((video) => (
-              <PetVideoCard key={video?._id} content={video} />
+              <PetVideoCard
+                key={video?._id}
+                content={video}
+                onPlay={() => handlePlay(video?._id)}
+                videoRef={(el) => (videoRefs.current[video?._id] = el)}
+              />
             ))}
             {filtered.length === 0 && (
               <div className="col-span-full text-center text-gray-500">
@@ -92,7 +108,7 @@ export default function VideoList() {
   );
 }
 
-function PetVideoCard({ content }) {
+function PetVideoCard({ content, onPlay, videoRef }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteVideo, { isLoading: isDeleting }] = useDeleteVideoMutation();
   const showModal = () => {
@@ -107,9 +123,17 @@ function PetVideoCard({ content }) {
       <div className="relative pb-[56.25%] w-full">
         <video
           className="absolute top-0 left-0 w-full h-full"
-          src={`${Url.replace(/\/+$/, "")}/${String(content?.videoUrl || "").replace(/^\/+/, "")}`}
+          src={(() => {
+            const raw = content?.videoUrl || "";
+            if (raw.startsWith("http")) return raw;
+            const base = Url.replace(/\/+$/, "");
+            const path = String(raw).replace(/^\/+/, "");
+            return `${base}/${path}`;
+          })()}
           controls
           preload="metadata"
+          ref={videoRef}
+          onPlay={onPlay}
         />
       </div>
 
