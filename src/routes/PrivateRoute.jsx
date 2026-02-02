@@ -5,16 +5,13 @@ import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
   const token = useSelector((state) => state.auth?.token);
-  console.log("token from private route", token);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
-    // console.log("token from private route", token);
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        // console.log(decoded);
         if (decoded.role === "admin") {
           setIsAuthorized(true);
         } else {
